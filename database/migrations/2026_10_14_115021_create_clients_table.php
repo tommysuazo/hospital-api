@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
 
-            $table->enum('document_type', DocumentTypeEnum::cases());
+            $table->enum('document_type', array_column(DocumentTypeEnum::cases(), 'value'));
             $table->string('document_number', 50);
 
             $table->date('birth_date');

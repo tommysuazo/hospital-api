@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\LocaleEnum;
 use App\Models\Doctor;
 use App\Models\DoctorTranslation;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -15,7 +16,7 @@ class DoctorTranslationFactory extends Factory
     {
         return [
             'doctor_id' => Doctor::factory(),
-            'locale' => fake()->randomElement(['es', 'en']),
+            'locale' => fake()->randomElement(array_column(LocaleEnum::cases(), 'value')),
             'professional_summary' => fake()->paragraph(),
         ];
     }
