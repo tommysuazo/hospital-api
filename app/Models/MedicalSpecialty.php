@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Models;
+
+use Database\Factories\MedicalSpecialtyFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+#[Fillable([
+    'slug',
+    'is_active',
+])]
+class MedicalSpecialty extends Model
+{
+    /** @use HasFactory<MedicalSpecialtyFactory> */
+    use HasFactory;
+
+    public function translations(): HasMany
+    {
+        return $this->hasMany(MedicalSpecialtyTranslation::class);
+    }
+
+    public function doctors(): BelongsToMany
+    {
+        return $this->belongsToMany(Doctor::class)->withTimestamps();
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'is_active' => 'boolean',
+        ];
+    }
+}
