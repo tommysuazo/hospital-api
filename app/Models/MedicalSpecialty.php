@@ -28,6 +28,11 @@ class MedicalSpecialty extends Model
         return $this->belongsToMany(Doctor::class)->withTimestamps();
     }
 
+    public function appointments(): HasMany
+    {
+        return $this->hasMany(Appointment::class, 'specialty_id');
+    }
+
     protected function casts(): array
     {
         return [

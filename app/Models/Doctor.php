@@ -48,6 +48,21 @@ class Doctor extends Model
         return $this->belongsToMany(MedicalSpecialty::class)->withTimestamps();
     }
 
+    public function schedules(): HasMany
+    {
+        return $this->hasMany(DoctorSchedule::class);
+    }
+
+    public function unavailabilities(): HasMany
+    {
+        return $this->hasMany(DoctorUnavailability::class);
+    }
+
+    public function appointments(): HasMany
+    {
+        return $this->hasMany(Appointment::class);
+    }
+
     protected function casts(): array
     {
         return [
