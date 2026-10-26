@@ -17,6 +17,7 @@ use Spatie\Permission\Traits\HasRoles;
     'uuid',
     'first_name',
     'last_name',
+    'gender',
     'phone',
     'email',
     'password',
