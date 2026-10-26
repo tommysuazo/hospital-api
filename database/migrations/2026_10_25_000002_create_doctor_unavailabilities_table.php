@@ -11,8 +11,7 @@ return new class extends Migration
         Schema::create('doctor_unavailabilities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('doctor_id')
-                ->constrained()
-                ->cascadeOnDelete();
+                ->constrained();
             $table->date('starts_on');
             $table->date('ends_on');
             $table->text('reason')->nullable();

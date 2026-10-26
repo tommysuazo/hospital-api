@@ -30,16 +30,17 @@ class MedicalDirectoryModelsTest extends TestCase
         $this->assertNull($independentDoctor->user);
     }
 
-    public function test_deleting_a_user_keeps_the_doctor_and_nulls_its_user_id(): void
+    public function test_a_user_linked_to_a_doctor_can_be_soft_deleted(): void
     {
         $user = User::factory()->create();
         $doctor = Doctor::factory()->for($user)->create();
 
         $user->delete();
 
+        $this->assertSoftDeleted($user);
         $this->assertDatabaseHas('doctors', [
             'id' => $doctor->id,
-            'user_id' => null,
+            'user_id' => $user->id,
         ]);
     }
 

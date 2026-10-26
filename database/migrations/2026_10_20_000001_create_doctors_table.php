@@ -14,13 +14,13 @@ return new class extends Migration
             $table->foreignId('user_id')
                 ->nullable()
                 ->unique()
-                ->constrained()
-                ->nullOnDelete();
+                ->constrained();
             $table->string('picture')->nullable();
             $table->string('consulting_room')->nullable();
             $table->string('phone_extension')->nullable();
             $table->boolean('is_active')->default(true)->index();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

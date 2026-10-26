@@ -12,8 +12,7 @@ return new class extends Migration
         Schema::create('appointment_histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('appointment_id')
-                ->constrained()
-                ->restrictOnDelete();
+                ->constrained();
             $table->enum('event', array_column(AppointmentHistoryEventEnum::cases(), 'value'));
             $table->nullableMorphs('actor');
             $table->json('old_values')->nullable();

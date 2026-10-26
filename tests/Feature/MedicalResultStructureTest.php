@@ -131,26 +131,32 @@ class MedicalResultStructureTest extends TestCase
         MedicalResultTranslation::factory()->for($medicalResult)->create(['locale' => 'es']);
     }
 
-    public function test_deleting_a_creator_keeps_the_result_and_nulls_created_by(): void
+    public function test_a_creator_linked_to_a_medical_result_can_be_soft_deleted(): void
     {
         $creator = User::factory()->create();
         $medicalResult = MedicalResult::factory()->createdBy($creator)->create();
 
         $creator->delete();
 
+        $this->assertSoftDeleted($creator);
         $this->assertDatabaseHas('medical_results', [
             'id' => $medicalResult->id,
-            'created_by' => null,
+            'created_by' => $creator->id,
         ]);
     }
 
-    public function test_a_client_with_medical_results_cannot_be_physically_deleted(): void
+    public function test_a_client_with_medical_results_can_be_soft_deleted(): void
     {
         $medicalResult = MedicalResult::factory()->create();
+        $client = $medicalResult->client;
 
-        $this->expectException(QueryException::class);
+        $client->delete();
 
-        $medicalResult->client->delete();
+        $this->assertSoftDeleted($client);
+        $this->assertDatabaseHas('medical_results', [
+            'id' => $medicalResult->id,
+            'client_id' => $client->id,
+        ]);
     }
 
     public function test_medical_result_indexes_are_configured(): void

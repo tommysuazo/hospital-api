@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable([
     'slug',
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class MedicalProcedure extends Model
 {
     /** @use HasFactory<MedicalProcedureFactory> */
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     public function translations(): HasMany
     {

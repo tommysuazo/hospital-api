@@ -14,14 +14,11 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->foreignId('client_id')
-                ->constrained()
-                ->restrictOnDelete();
+                ->constrained();
             $table->foreignId('doctor_id')
-                ->constrained()
-                ->restrictOnDelete();
+                ->constrained();
             $table->foreignId('specialty_id')
-                ->constrained('medical_specialties')
-                ->restrictOnDelete();
+                ->constrained('medical_specialties');
             $table->enum('appointment_for', array_column(AppointmentForEnum::cases(), 'value'));
             $table->date('appointment_date');
             $table->unsignedInteger('turn_number');

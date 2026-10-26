@@ -13,12 +13,10 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->foreignId('client_id')
-                ->constrained()
-                ->restrictOnDelete();
+                ->constrained();
             $table->foreignId('appointment_id')
                 ->nullable()
-                ->constrained()
-                ->restrictOnDelete();
+                ->constrained();
             $table->date('result_date');
             $table->enum('status', array_column(MedicalResultStatusEnum::cases(), 'value'))
                 ->default(MedicalResultStatusEnum::Draft->value);
@@ -26,8 +24,7 @@ return new class extends Migration
             $table->timestamp('published_at')->nullable();
             $table->foreignId('created_by')
                 ->nullable()
-                ->constrained('users')
-                ->nullOnDelete();
+                ->constrained('users');
             $table->timestamps();
             $table->softDeletes();
 
