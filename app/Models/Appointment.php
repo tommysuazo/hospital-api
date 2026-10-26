@@ -56,6 +56,11 @@ class Appointment extends Model
         return $this->hasMany(AppointmentHistory::class);
     }
 
+    public function medicalResults(): HasMany
+    {
+        return $this->hasMany(MedicalResult::class);
+    }
+
     protected function casts(): array
     {
         return [

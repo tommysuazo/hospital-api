@@ -41,6 +41,11 @@ class Client extends Authenticatable
         return $this->hasMany(Appointment::class);
     }
 
+    public function medicalResults(): HasMany
+    {
+        return $this->hasMany(MedicalResult::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *
