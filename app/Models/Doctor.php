@@ -14,11 +14,9 @@ use Illuminate\Support\Str;
 #[Fillable([
     'uuid',
     'user_id',
-    'first_name',
-    'last_name',
-    'photo_path',
+    'picture',
     'consulting_room',
-    'extension',
+    'phone_extension',
     'is_active',
 ])]
 class Doctor extends Model

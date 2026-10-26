@@ -14,16 +14,13 @@ return new class extends Migration
             $table->foreignId('user_id')
                 ->nullable()
                 ->unique()
-                ->constrained();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('photo_path')->nullable();
+                ->constrained()
+                ->nullOnDelete();
+            $table->string('picture')->nullable();
             $table->string('consulting_room')->nullable();
-            $table->string('extension')->nullable();
+            $table->string('phone_extension')->nullable();
             $table->boolean('is_active')->default(true)->index();
             $table->timestamps();
-
-            $table->index(['last_name', 'first_name']);
         });
     }
 

@@ -16,11 +16,9 @@ class DoctorFactory extends Factory
         return [
             'uuid' => (string) Str::uuid(),
             'user_id' => null,
-            'first_name' => fake()->firstName(),
-            'last_name' => fake()->lastName(),
-            'photo_path' => null,
+            'picture' => null,
             'consulting_room' => fake()->bothify('Consultorio ##?'),
-            'extension' => fake()->numerify('####'),
+            'phone_extension' => fake()->numerify('####'),
             'is_active' => true,
         ];
     }

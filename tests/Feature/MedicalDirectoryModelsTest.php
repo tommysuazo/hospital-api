@@ -11,6 +11,7 @@ use App\Models\MedicalSpecialtyTranslation;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -44,14 +45,21 @@ class MedicalDirectoryModelsTest extends TestCase
 
     public function test_doctor_generates_a_uuid_when_created_without_one(): void
     {
-        $doctor = Doctor::create([
-            'first_name' => 'Ana',
-            'last_name' => 'Pérez',
-        ]);
+        $doctor = Doctor::create();
         $doctor->refresh();
 
         $this->assertTrue(Str::isUuid($doctor->uuid));
         $this->assertTrue($doctor->is_active);
+    }
+
+    public function test_doctor_uses_user_identity_and_updated_contact_columns(): void
+    {
+        $this->assertFalse(Schema::hasColumn('doctors', 'first_name'));
+        $this->assertFalse(Schema::hasColumn('doctors', 'last_name'));
+        $this->assertFalse(Schema::hasColumn('doctors', 'extension'));
+        $this->assertFalse(Schema::hasColumn('doctors', 'photo_path'));
+        $this->assertTrue(Schema::hasColumn('doctors', 'phone_extension'));
+        $this->assertTrue(Schema::hasColumn('doctors', 'picture'));
     }
 
     public function test_a_user_cannot_be_associated_with_more_than_one_doctor(): void
