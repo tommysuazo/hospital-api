@@ -42,6 +42,24 @@ Use analogous names for other models, such as `Client`, `Doctor`, and `Appointme
 
 Use standard REST controller methods: `index`, `show`, `store`, `update`, and `destroy`. `create` and `edit` are HTML-form methods and should not be generated for JSON-only API controllers. Services and repositories may use `create`, `update`, and `delete` as operation names.
 
+### Eloquent Model Attribute Casts
+
+- When creating or editing an Eloquent model, keep enum-backed database attributes cast as `string` rather than casting them to PHP enum classes.
+- Preserve scalar string values when reading or writing those attributes; do not add an enum-class cast such as `'status' => StatusEnum::class` in the model's `casts()` method.
+- Enum classes may still be used elsewhere to define or validate permitted values without changing how the model casts those attributes.
+
+Example:
+
+```php
+protected function casts(): array
+{
+    return [
+        'status' => 'string',
+        'is_active' => 'boolean',
+    ];
+}
+```
+
 ## 4. Controllers — HTTP Orchestration Only
 
 Controllers must:
@@ -169,6 +187,24 @@ Examples include an unavailable appointment slot, a prohibited state transition,
 
 Keep JSON success and error shapes consistent with the existing API contract.
 
+### Explicit API Route Definitions
+
+- Define each API endpoint explicitly with `Route::get()`, `Route::post()`, `Route::put()`, `Route::patch()`, or `Route::delete()`, as appropriate. Do not use `Route::apiResource()` or other resource route generators.
+- Give each route an explicit name and group related routes with `Route::name('...')->group()` when a shared name prefix is useful. Apply `prefix()` to the group when the routes share a URI prefix.
+- Keep HTTP methods, URI patterns, controller methods, and route names visible in the route file. Register only the endpoints the API needs.
+
+Example:
+
+```php
+Route::prefix('doctors')->name('doctors.')->group(function () {
+    Route::get('/', [DoctorController::class, 'index'])->name('index');
+    Route::post('/', [DoctorController::class, 'store'])->name('store');
+    Route::get('/{doctor}', [DoctorController::class, 'show'])->name('show');
+    Route::put('/{doctor}', [DoctorController::class, 'update'])->name('update');
+    Route::delete('/{doctor}', [DoctorController::class, 'destroy'])->name('destroy');
+});
+```
+
 ## 12. Dependency Injection and Boundaries
 
 Dependency direction:
@@ -216,6 +252,8 @@ Do not generate duplicate controllers, repositories, or services when existing o
 - No leakage of internal unexpected-error details.
 - No unrelated dependency changes or infrastructure setup without approval.
 - No replacement of the agreed layered architecture without explicit instruction.
+- No enum-class casts for string-based enum attributes in Eloquent models.
+- No `Route::apiResource()` or implicit resource route generation.
 
 ## 15. Core Principle
 
