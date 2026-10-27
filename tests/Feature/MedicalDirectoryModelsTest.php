@@ -98,6 +98,7 @@ class MedicalDirectoryModelsTest extends TestCase
         $this->assertCount(2, $doctor->translations);
         $this->assertCount(2, $medicalSpecialty->translations);
         $this->assertCount(2, $procedure->translations);
+        $this->assertFalse(Schema::hasColumn('medical_specialty_translations', 'description'));
     }
 
     public function test_doctors_and_medical_specialties_have_a_many_to_many_relationship(): void

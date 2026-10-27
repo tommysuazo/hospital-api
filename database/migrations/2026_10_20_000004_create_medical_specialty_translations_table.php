@@ -15,7 +15,6 @@ return new class extends Migration
                 ->constrained();
             $table->enum('locale', array_column(LocaleEnum::cases(), 'value'));
             $table->string('name');
-            $table->text('description')->nullable();
             $table->timestamps();
 
             $table->unique(

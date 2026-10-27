@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'medical_specialty_id',
     'locale',
     'name',
-    'description',
 ])]
 class MedicalSpecialtyTranslation extends Model
 {

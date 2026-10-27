@@ -18,7 +18,6 @@ class MedicalSpecialtyTranslationFactory extends Factory
             'medical_specialty_id' => MedicalSpecialty::factory(),
             'locale' => fake()->randomElement(array_column(LocaleEnum::cases(), 'value')),
             'name' => fake()->words(2, true),
-            'description' => fake()->paragraph(),
         ];
     }
 }
