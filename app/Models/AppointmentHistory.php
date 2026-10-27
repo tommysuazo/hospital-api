@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\AppointmentHistoryEventEnum;
 use Database\Factories\AppointmentHistoryFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -50,7 +49,6 @@ class AppointmentHistory extends Model
     protected function casts(): array
     {
         return [
-            'event' => AppointmentHistoryEventEnum::class,
             'old_values' => 'array',
             'new_values' => 'array',
             'created_at' => 'datetime',

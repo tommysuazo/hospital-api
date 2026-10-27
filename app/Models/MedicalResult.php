@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\MedicalResultStatusEnum;
 use Database\Factories\MedicalResultFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -63,7 +62,6 @@ class MedicalResult extends Model
     {
         return [
             'result_date' => 'date',
-            'status' => MedicalResultStatusEnum::class,
             'published_at' => 'datetime',
         ];
     }

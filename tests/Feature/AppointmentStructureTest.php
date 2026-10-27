@@ -30,13 +30,13 @@ class AppointmentStructureTest extends TestCase
     {
         $doctor = Doctor::factory()->create();
         $schedule = DoctorSchedule::factory()->for($doctor)->create([
-            'day_of_week' => DayOfWeekEnum::Monday,
+            'day_of_week' => DayOfWeekEnum::Monday->value,
             'is_active' => true,
         ]);
 
         $this->assertTrue($schedule->doctor->is($doctor));
         $this->assertCount(1, $doctor->schedules);
-        $this->assertSame(DayOfWeekEnum::Monday, $schedule->day_of_week);
+        $this->assertSame(DayOfWeekEnum::Monday->value, $schedule->day_of_week);
         $this->assertIsBool($schedule->is_active);
         $this->assertTrue($schedule->is_active);
     }
@@ -46,12 +46,12 @@ class AppointmentStructureTest extends TestCase
         $doctor = Doctor::factory()->create();
 
         DoctorSchedule::factory()->for($doctor)->create([
-            'day_of_week' => DayOfWeekEnum::Monday,
+            'day_of_week' => DayOfWeekEnum::Monday->value,
             'start_time' => '08:00:00',
             'end_time' => '12:00:00',
         ]);
         DoctorSchedule::factory()->for($doctor)->create([
-            'day_of_week' => DayOfWeekEnum::Monday,
+            'day_of_week' => DayOfWeekEnum::Monday->value,
             'start_time' => '14:00:00',
             'end_time' => '18:00:00',
         ]);
@@ -82,15 +82,15 @@ class AppointmentStructureTest extends TestCase
     {
         $appointment = Appointment::factory()->create([
             'uuid' => null,
-            'appointment_for' => AppointmentForEnum::Dependent,
+            'appointment_for' => AppointmentForEnum::Dependent->value,
             'appointment_date' => '2026-10-30',
             'turn_number' => 7,
-            'status' => AppointmentStatusEnum::Confirmed,
+            'status' => AppointmentStatusEnum::Confirmed->value,
         ]);
 
         $this->assertTrue(Str::isUuid($appointment->uuid));
-        $this->assertSame(AppointmentForEnum::Dependent, $appointment->appointment_for);
-        $this->assertSame(AppointmentStatusEnum::Confirmed, $appointment->status);
+        $this->assertSame(AppointmentForEnum::Dependent->value, $appointment->appointment_for);
+        $this->assertSame(AppointmentStatusEnum::Confirmed->value, $appointment->status);
         $this->assertInstanceOf(Carbon::class, $appointment->appointment_date);
         $this->assertSame('2026-10-30', $appointment->appointment_date->toDateString());
         $this->assertIsInt($appointment->turn_number);
@@ -193,7 +193,7 @@ class AppointmentStructureTest extends TestCase
     {
         $appointment = Appointment::factory()->create();
         $history = AppointmentHistory::factory()->for($appointment)->create([
-            'event' => AppointmentHistoryEventEnum::Rescheduled,
+            'event' => AppointmentHistoryEventEnum::Rescheduled->value,
             'old_values' => [
                 'appointment_date' => '2026-10-25',
                 'turn_number' => 8,
@@ -207,7 +207,7 @@ class AppointmentStructureTest extends TestCase
 
         $this->assertTrue($history->appointment->is($appointment));
         $this->assertCount(2, $appointment->histories);
-        $this->assertSame(AppointmentHistoryEventEnum::Rescheduled, $history->event);
+        $this->assertSame(AppointmentHistoryEventEnum::Rescheduled->value, $history->event);
         $this->assertIsArray($history->old_values);
         $this->assertIsArray($history->new_values);
         $this->assertInstanceOf(Carbon::class, $history->created_at);
@@ -239,14 +239,14 @@ class AppointmentStructureTest extends TestCase
         $history = AppointmentHistory::factory()->create();
 
         try {
-            $history->update(['event' => AppointmentHistoryEventEnum::Cancelled]);
+            $history->update(['event' => AppointmentHistoryEventEnum::Cancelled->value]);
             $this->fail('Updating appointment history should not be allowed.');
         } catch (LogicException) {
             $history->refresh();
 
             $this->assertDatabaseHas('appointment_histories', [
                 'id' => $history->id,
-                'event' => $history->event->value,
+                'event' => $history->event,
             ]);
         }
 

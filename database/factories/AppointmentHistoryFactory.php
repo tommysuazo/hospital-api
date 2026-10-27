@@ -17,7 +17,7 @@ class AppointmentHistoryFactory extends Factory
     {
         return [
             'appointment_id' => Appointment::factory(),
-            'event' => fake()->randomElement(AppointmentHistoryEventEnum::cases()),
+            'event' => fake()->randomElement(array_column(AppointmentHistoryEventEnum::cases(), 'value')),
             'actor_type' => null,
             'actor_id' => null,
             'old_values' => fake()->optional()->randomElement([

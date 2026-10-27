@@ -75,7 +75,7 @@ class MedicalResultStructureTest extends TestCase
 
         $this->assertInstanceOf(Carbon::class, $medicalResult->result_date);
         $this->assertSame('2026-10-20', $medicalResult->result_date->toDateString());
-        $this->assertSame(MedicalResultStatusEnum::Draft, $medicalResult->status);
+        $this->assertSame(MedicalResultStatusEnum::Draft->value, $medicalResult->status);
         $this->assertNull($medicalResult->published_at);
     }
 
@@ -83,7 +83,7 @@ class MedicalResultStructureTest extends TestCase
     {
         $medicalResult = MedicalResult::factory()->published()->create();
 
-        $this->assertSame(MedicalResultStatusEnum::Published, $medicalResult->status);
+        $this->assertSame(MedicalResultStatusEnum::Published->value, $medicalResult->status);
         $this->assertInstanceOf(Carbon::class, $medicalResult->published_at);
     }
 

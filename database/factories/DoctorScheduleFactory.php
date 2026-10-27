@@ -21,7 +21,7 @@ class DoctorScheduleFactory extends Factory
 
         return [
             'doctor_id' => Doctor::factory(),
-            'day_of_week' => fake()->randomElement(DayOfWeekEnum::cases()),
+            'day_of_week' => fake()->randomElement(array_column(DayOfWeekEnum::cases(), 'value')),
             'start_time' => $startTime,
             'end_time' => $endTime,
             'is_active' => true,

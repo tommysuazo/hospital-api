@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\DayOfWeekEnum;
 use Database\Factories\DoctorScheduleFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,7 +29,6 @@ class DoctorSchedule extends Model
     protected function casts(): array
     {
         return [
-            'day_of_week' => DayOfWeekEnum::class,
             'is_active' => 'boolean',
         ];
     }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\DocumentTypeEnum;
 use Database\Factories\ClientFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -55,7 +54,6 @@ class Client extends Authenticatable
     protected function casts(): array
     {
         return [
-            'document_type' => DocumentTypeEnum::class,
             'birth_date' => 'date',
             'email_verified_at' => 'datetime',
             'last_login_at' => 'datetime',

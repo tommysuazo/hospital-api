@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\DocumentTypeEnum;
+use App\Enums\UserDocumentTypeEnum;
 use App\Models\Client;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -15,11 +15,11 @@ class ClientFactory extends Factory
 {
     public function definition(): array
     {
-        $documentType = fake()->randomElement(DocumentTypeEnum::cases());
+        $documentType = fake()->randomElement(UserDocumentTypeEnum::cases());
 
         $documentNumber = match ($documentType) {
-            DocumentTypeEnum::IdCard => fake()->unique()->numerify('###########'),
-            DocumentTypeEnum::Passport => strtoupper(
+            UserDocumentTypeEnum::IdCard => fake()->unique()->numerify('###########'),
+            UserDocumentTypeEnum::Passport => strtoupper(
                 fake()->unique()->bothify('??#######')
             ),
         };
@@ -29,7 +29,7 @@ class ClientFactory extends Factory
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
 
-            'document_type' => $documentType,
+            'document_type' => $documentType->value,
             'document_number' => $documentNumber,
 
             'birth_date' => fake()->dateTimeBetween('-80 years', '-18 years')

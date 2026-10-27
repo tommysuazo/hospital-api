@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\DocumentTypeEnum;
+use App\Enums\UserDocumentTypeEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
 
-            $table->enum('document_type', array_column(DocumentTypeEnum::cases(), 'value'));
+            $table->enum('document_type', array_column(UserDocumentTypeEnum::cases(), 'value'));
             $table->string('document_number', 50);
 
             $table->date('birth_date');

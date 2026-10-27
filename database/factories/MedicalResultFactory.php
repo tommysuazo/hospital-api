@@ -22,7 +22,7 @@ class MedicalResultFactory extends Factory
             'client_id' => Client::factory(),
             'appointment_id' => null,
             'result_date' => fake()->dateTimeBetween('-1 year')->format('Y-m-d'),
-            'status' => MedicalResultStatusEnum::Draft,
+            'status' => MedicalResultStatusEnum::Draft->value,
             'file_path' => null,
             'published_at' => null,
             'created_by' => null,
@@ -32,7 +32,7 @@ class MedicalResultFactory extends Factory
     public function published(): static
     {
         return $this->state(fn () => [
-            'status' => MedicalResultStatusEnum::Published,
+            'status' => MedicalResultStatusEnum::Published->value,
             'published_at' => fake()->dateTimeBetween('-1 year'),
         ]);
     }

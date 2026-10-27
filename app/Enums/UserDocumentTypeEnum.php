@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum DocumentTypeEnum: string
+enum UserDocumentTypeEnum: string
 {
     case IdCard = 'id_card';
     case Passport = 'passport';

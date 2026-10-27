@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\AppointmentForEnum;
-use App\Enums\AppointmentStatusEnum;
 use Database\Factories\AppointmentFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -64,10 +62,8 @@ class Appointment extends Model
     protected function casts(): array
     {
         return [
-            'appointment_for' => AppointmentForEnum::class,
             'appointment_date' => 'date',
             'turn_number' => 'integer',
-            'status' => AppointmentStatusEnum::class,
         ];
     }
 }

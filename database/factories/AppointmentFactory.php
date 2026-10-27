@@ -30,12 +30,12 @@ class AppointmentFactory extends Factory
 
                 return $specialty->id;
             },
-            'appointment_for' => fake()->randomElement(AppointmentForEnum::cases()),
+            'appointment_for' => fake()->randomElement(array_column(AppointmentForEnum::cases(), 'value')),
             'appointment_date' => fake()->dateTimeBetween('+1 day', '+3 months')
                 ->format('Y-m-d'),
             'turn_number' => fake()->numberBetween(1, 30),
             'reason' => fake()->optional()->sentence(),
-            'status' => AppointmentStatusEnum::Confirmed,
+            'status' => AppointmentStatusEnum::Confirmed->value,
         ];
     }
 }
