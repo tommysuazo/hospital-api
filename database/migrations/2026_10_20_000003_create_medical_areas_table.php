@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('medical_specialties', function (Blueprint $table) {
+        Schema::create('medical_areas', function (Blueprint $table) {
             $table->id();
             $table->string('slug')->unique();
             $table->boolean('is_active')->default(true)->index();
@@ -19,6 +19,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('medical_specialties');
+        Schema::dropIfExists('medical_areas');
     }
 };

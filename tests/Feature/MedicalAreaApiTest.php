@@ -2,61 +2,61 @@
 
 namespace Tests\Feature;
 
-use App\Models\MedicalSpecialty;
-use App\Models\MedicalSpecialtyTranslation;
+use App\Models\MedicalArea;
+use App\Models\MedicalAreaTranslation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class MedicalSpecialtyApiTest extends TestCase
+class MedicalAreaApiTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_anyone_can_list_active_medical_specialties(): void
+    public function test_anyone_can_list_active_medical_areas(): void
     {
-        $pediatrics = MedicalSpecialty::factory()->create([
+        $pediatrics = MedicalArea::factory()->create([
             'slug' => 'pediatrics',
         ]);
-        MedicalSpecialtyTranslation::factory()
-            ->for($pediatrics, 'medicalSpecialty')
+        MedicalAreaTranslation::factory()
+            ->for($pediatrics, 'medicalArea')
             ->create([
                 'locale' => 'es',
                 'name' => 'Pediatría',
             ]);
-        MedicalSpecialtyTranslation::factory()
-            ->for($pediatrics, 'medicalSpecialty')
+        MedicalAreaTranslation::factory()
+            ->for($pediatrics, 'medicalArea')
             ->create([
                 'locale' => 'en',
                 'name' => 'Pediatrics',
             ]);
 
-        $cardiology = MedicalSpecialty::factory()->create([
+        $cardiology = MedicalArea::factory()->create([
             'slug' => 'cardiology',
         ]);
-        MedicalSpecialtyTranslation::factory()
-            ->for($cardiology, 'medicalSpecialty')
+        MedicalAreaTranslation::factory()
+            ->for($cardiology, 'medicalArea')
             ->create([
                 'locale' => 'en',
                 'name' => 'Cardiology',
             ]);
-        MedicalSpecialtyTranslation::factory()
-            ->for($cardiology, 'medicalSpecialty')
+        MedicalAreaTranslation::factory()
+            ->for($cardiology, 'medicalArea')
             ->create([
                 'locale' => 'es',
                 'name' => 'Cardiología',
             ]);
 
-        $inactiveSpecialty = MedicalSpecialty::factory()->create([
-            'slug' => 'inactive-specialty',
+        $inactiveMedicalArea = MedicalArea::factory()->create([
+            'slug' => 'inactive-medical-area',
             'is_active' => false,
         ]);
-        MedicalSpecialtyTranslation::factory()
-            ->for($inactiveSpecialty, 'medicalSpecialty')
+        MedicalAreaTranslation::factory()
+            ->for($inactiveMedicalArea, 'medicalArea')
             ->create([
                 'locale' => 'es',
-                'name' => 'Especialidad inactiva',
+                'name' => 'Área médica inactiva',
             ]);
 
-        $response = $this->getJson('/api/medical-specialties');
+        $response = $this->getJson('/api/medical-areas');
 
         $response
             ->assertOk()

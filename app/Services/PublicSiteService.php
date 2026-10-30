@@ -5,27 +5,27 @@ namespace App\Services;
 use App\Models\Doctor;
 use App\Repositories\DoctorRepository;
 use App\Repositories\MedicalProcedureRepository;
-use App\Repositories\MedicalSpecialtyRepository;
+use App\Repositories\MedicalAreaRepository;
 use Illuminate\Database\Eloquent\Collection;
 
 class PublicSiteService
 {
     public function __construct(
         private readonly DoctorRepository $doctorRepository,
-        private readonly MedicalSpecialtyRepository $medicalSpecialtyRepository,
+        private readonly MedicalAreaRepository $medicalAreaRepository,
         private readonly MedicalProcedureRepository $medicalProcedureRepository,
     ) {}
 
     /**
      * @return array{
-     *     specialties: Collection,
+     *     medicalAreas: Collection,
      *     procedures: Collection,
      * }
      */
     public function getHomeData(): array
     {
         return [
-            'specialties' => $this->medicalSpecialtyRepository->getPublicTranslatedList(),
+            'medicalAreas' => $this->medicalAreaRepository->getPublicTranslatedList(),
             'procedures' => $this->medicalProcedureRepository->getPublicList(),
         ];
     }
@@ -33,14 +33,14 @@ class PublicSiteService
     /**
      * @return array{
      *     doctors: Collection,
-     *     specialties: Collection,
+     *     medicalAreas: Collection,
      * }
      */
     public function getDoctorDirectoryData(): array
     {
         return [
             'doctors' => $this->doctorRepository->getPublicDirectory(),
-            'specialties' => $this->medicalSpecialtyRepository->getPublicTranslatedList(),
+            'medicalAreas' => $this->medicalAreaRepository->getPublicTranslatedList(),
         ];
     }
 

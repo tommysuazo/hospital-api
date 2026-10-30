@@ -3,27 +3,27 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\MedicalSpecialtySummaryResource;
-use App\Services\MedicalSpecialtyService;
+use App\Http\Resources\MedicalAreaSummaryResource;
+use App\Services\MedicalAreaService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Throwable;
 
-class MedicalSpecialtyController extends Controller
+class MedicalAreaController extends Controller
 {
     public function __construct(
-        private readonly MedicalSpecialtyService $medicalSpecialtyService,
+        private readonly MedicalAreaService $medicalAreaService,
     ) {}
 
     public function getPublicList(Request $request): AnonymousResourceCollection|JsonResponse
     {
         try {
-            $medicalSpecialties = $this->medicalSpecialtyService->getPublicList(
+            $medicalAreas = $this->medicalAreaService->getPublicList(
                 $request->getLocale()
             );
 
-            return MedicalSpecialtySummaryResource::collection($medicalSpecialties);
+            return MedicalAreaSummaryResource::collection($medicalAreas);
         } catch (Throwable $exception) {
             report($exception);
 

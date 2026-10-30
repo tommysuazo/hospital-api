@@ -2,18 +2,18 @@
 
 namespace App\Repositories;
 
-use App\Models\MedicalSpecialty;
+use App\Models\MedicalArea;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
-class MedicalSpecialtyRepository
+class MedicalAreaRepository
 {
     /**
-     * @return Builder<MedicalSpecialty>
+     * @return Builder<MedicalArea>
      */
     protected function query(): Builder
     {
-        $query = MedicalSpecialty::query();
+        $query = MedicalArea::query();
 
         $query->orderBy('slug');
 
@@ -21,7 +21,7 @@ class MedicalSpecialtyRepository
     }
 
     /**
-     * @return Collection<int, MedicalSpecialty>
+     * @return Collection<int, MedicalArea>
      */
     public function getPublicList(string $locale): Collection
     {
@@ -35,7 +35,7 @@ class MedicalSpecialtyRepository
     }
 
     /**
-     * @return Collection<int, MedicalSpecialty>
+     * @return Collection<int, MedicalArea>
      */
     public function getPublicTranslatedList(): Collection
     {

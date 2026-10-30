@@ -2,24 +2,24 @@
 
 namespace App\Models;
 
-use Database\Factories\MedicalSpecialtyTranslationFactory;
+use Database\Factories\MedicalAreaTranslationFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable([
-    'medical_specialty_id',
+    'medical_area_id',
     'locale',
     'name',
 ])]
-class MedicalSpecialtyTranslation extends Model
+class MedicalAreaTranslation extends Model
 {
-    /** @use HasFactory<MedicalSpecialtyTranslationFactory> */
+    /** @use HasFactory<MedicalAreaTranslationFactory> */
     use HasFactory;
 
-    public function medicalSpecialty(): BelongsTo
+    public function medicalArea(): BelongsTo
     {
-        return $this->belongsTo(MedicalSpecialty::class);
+        return $this->belongsTo(MedicalArea::class);
     }
 }

@@ -8,8 +8,8 @@ use App\Models\DoctorSchedule;
 use App\Models\DoctorTranslation;
 use App\Models\MedicalProcedure;
 use App\Models\MedicalProcedureTranslation;
-use App\Models\MedicalSpecialty;
-use App\Models\MedicalSpecialtyTranslation;
+use App\Models\MedicalArea;
+use App\Models\MedicalAreaTranslation;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -28,7 +28,7 @@ class PublicSiteTest extends TestCase
             ->assertSee('Plus+Jakarta+Sans', false)
             ->assertInertia(fn (Assert $page) => $page
                 ->component('Public/Home')
-                ->has('specialties')
+                ->has('medicalAreas')
                 ->has('procedures'));
 
         $this->get('/about')->assertOk()->assertInertia(fn (Assert $page) => $page
@@ -46,10 +46,10 @@ class PublicSiteTest extends TestCase
             ->where('mode', 'register'));
     }
 
-    public function test_home_receives_translated_specialties_and_procedures(): void
+    public function test_home_receives_translated_medical_areas_and_procedures(): void
     {
-        $specialty = MedicalSpecialty::factory()->create(['slug' => 'cardiology']);
-        MedicalSpecialtyTranslation::factory()->for($specialty, 'medicalSpecialty')->create([
+        $medicalArea = MedicalArea::factory()->create(['slug' => 'cardiology']);
+        MedicalAreaTranslation::factory()->for($medicalArea, 'medicalArea')->create([
             'locale' => 'es',
             'name' => 'Cardiología',
         ]);
@@ -62,8 +62,8 @@ class PublicSiteTest extends TestCase
         ]);
 
         $this->get('/')->assertOk()->assertInertia(fn (Assert $page) => $page
-            ->where('specialties.0.slug', 'cardiology')
-            ->where('specialties.0.names.es', 'Cardiología')
+            ->where('medicalAreas.0.slug', 'cardiology')
+            ->where('medicalAreas.0.names.es', 'Cardiología')
             ->where('procedures.0.slug', 'radiography')
             ->where('procedures.0.translations.es.name', 'Radiografía'));
     }
@@ -86,19 +86,19 @@ class PublicSiteTest extends TestCase
             'day_of_week' => DayOfWeekEnum::Tuesday->value,
         ]);
 
-        $specialty = MedicalSpecialty::factory()->create(['slug' => 'pediatrics']);
-        MedicalSpecialtyTranslation::factory()->for($specialty, 'medicalSpecialty')->create([
+        $medicalArea = MedicalArea::factory()->create(['slug' => 'pediatrics']);
+        MedicalAreaTranslation::factory()->for($medicalArea, 'medicalArea')->create([
             'locale' => 'es',
             'name' => 'Pediatría',
         ]);
-        $doctor->medicalSpecialties()->attach($specialty);
+        $doctor->medicalAreas()->attach($medicalArea);
 
         $this->get('/doctors')->assertOk()->assertInertia(fn (Assert $page) => $page
             ->component('Public/Doctors/Index')
             ->has('doctors', 1)
             ->where('doctors.0.name', 'Ana Fernández')
             ->where('doctors.0.workDays.0', 2)
-            ->where('doctors.0.specialties.0.names.es', 'Pediatría'));
+            ->where('doctors.0.medicalAreas.0.names.es', 'Pediatría'));
 
         $this->get("/doctors/{$doctor->uuid}")->assertOk()->assertInertia(fn (Assert $page) => $page
             ->component('Public/Doctors/Show')

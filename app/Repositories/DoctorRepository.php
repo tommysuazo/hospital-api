@@ -26,10 +26,10 @@ class DoctorRepository
             ->with([
                 'user:id,first_name,last_name',
                 'translations:id,doctor_id,locale,professional_summary',
-                'medicalSpecialties' => fn ($query) => $query
-                    ->select(['medical_specialties.id', 'slug'])
+                'medicalAreas' => fn ($query) => $query
+                    ->select(['medical_areas.id', 'slug'])
                     ->where('is_active', true)
-                    ->with('translations:id,medical_specialty_id,locale,name'),
+                    ->with('translations:id,medical_area_id,locale,name'),
                 'schedules' => fn ($query) => $query
                     ->select(['id', 'doctor_id', 'day_of_week'])
                     ->where('is_active', true),

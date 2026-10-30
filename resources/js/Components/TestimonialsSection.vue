@@ -35,7 +35,7 @@ const { t } = useLanguage()
   padding: 6.5rem 2rem;
   background:
     radial-gradient(circle at 100% 0%, rgba(43, 174, 120, 0.13), transparent 25rem),
-    var(--color-specialties);
+    var(--color-medical-areas);
 }
 
 .testimonials__container { max-width: var(--container-width); margin-inline: auto; }

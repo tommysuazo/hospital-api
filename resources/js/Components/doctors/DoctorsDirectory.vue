@@ -12,7 +12,7 @@ import '../../../css/doctors-directory.css'
 const { language } = useLanguage()
 const props = defineProps({
   doctors: { type: Array, default: () => [] },
-  specialties: { type: Array, default: () => [] },
+  medicalAreas: { type: Array, default: () => [] },
 })
 
 const english = computed(() => language.value === 'en')
@@ -23,15 +23,15 @@ const sort = ref('available')
 const view = ref('grid')
 const today = todayInCenter()
 const perPage = 8
-const localizedSpecialties = computed(() => props.specialties.map(
-  (specialty) => specialty.names[language.value] || specialty.names.es || specialty.slug,
+const localizedMedicalAreas = computed(() => props.medicalAreas.map(
+  (medicalArea) => medicalArea.names[language.value] || medicalArea.names.es || medicalArea.slug,
 ))
 const localizedDoctors = computed(() => props.doctors.map((doctor, index) => ({
   ...doctor,
   photo: doctor.photo || resolveDoctorPhoto(doctor.id, index),
   description: doctor.descriptions?.[language.value] || doctor.descriptions?.es || '',
-  specialties: doctor.specialties.map(
-    (specialty) => specialty.names[language.value] || specialty.names.es || specialty.slug,
+  medicalAreas: doctor.medicalAreas.map(
+    (medicalArea) => medicalArea.names[language.value] || medicalArea.names.es || medicalArea.slug,
   ),
 })))
 
@@ -79,7 +79,7 @@ function updatePage(value) {
       <DirectoryFilters
         :filters="filters"
         :english="english"
-        :specialties="localizedSpecialties"
+        :medical-areas="localizedMedicalAreas"
         @update-filter="updateFilter"
         @search="applyFilters"
         @clear="clearFilters"
@@ -107,7 +107,7 @@ function updatePage(value) {
 
       <div v-else class="directory-empty">
         <h2>{{ english ? 'No matching specialists' : 'No encontramos especialistas con estos filtros' }}</h2>
-        <p>{{ english ? 'Try another specialty, date or search.' : 'Prueba otra especialidad, fecha o búsqueda.' }}</p>
+        <p>{{ english ? 'Try another medical area, date or search.' : 'Prueba otra área médica, fecha o búsqueda.' }}</p>
         <button type="button" @click="clearFilters">{{ english ? 'Clear filters' : 'Limpiar filtros' }}</button>
       </div>
 

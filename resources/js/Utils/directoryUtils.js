@@ -1,4 +1,4 @@
-export const emptyFilters = Object.freeze({ search: '', specialty: '', date: '' })
+export const emptyFilters = Object.freeze({ search: '', medicalArea: '', date: '' })
 
 export function isAvailableOnDate(doctor, date) {
   return doctor.workDays.includes(date.getDay())
@@ -23,9 +23,9 @@ export function nextDay(doctor, today) {
 }
 
 export function matchesDoctor(doctor, filters) {
-  const text = normalize(`${doctor.name} ${doctor.specialties.join(' ')} ${doctor.subspecialty || ''}`)
+  const text = normalize(`${doctor.name} ${doctor.medicalAreas.join(' ')}`)
   if (!text.includes(normalize(filters.search.trim()))) return false
-  if (filters.specialty && !doctor.specialties.includes(filters.specialty)) return false
+  if (filters.medicalArea && !doctor.medicalAreas.includes(filters.medicalArea)) return false
   if (filters.date && !isAvailableOnDate(doctor, new Date(`${filters.date}T12:00:00`))) return false
   return true
 }

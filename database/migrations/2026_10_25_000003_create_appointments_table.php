@@ -17,8 +17,8 @@ return new class extends Migration
                 ->constrained();
             $table->foreignId('doctor_id')
                 ->constrained();
-            $table->foreignId('specialty_id')
-                ->constrained('medical_specialties');
+            $table->foreignId('medical_area_id')
+                ->constrained();
             $table->enum('appointment_for', array_column(AppointmentForEnum::cases(), 'value'));
             $table->date('appointment_date');
             $table->unsignedInteger('turn_number');

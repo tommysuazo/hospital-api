@@ -12,7 +12,7 @@ use App\Models\Client;
 use App\Models\Doctor;
 use App\Models\DoctorSchedule;
 use App\Models\DoctorUnavailability;
-use App\Models\MedicalSpecialty;
+use App\Models\MedicalArea;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -97,43 +97,43 @@ class AppointmentStructureTest extends TestCase
         $this->assertSame(7, $appointment->turn_number);
     }
 
-    public function test_appointment_belongs_to_client_doctor_and_specialty(): void
+    public function test_appointment_belongs_to_client_doctor_and_medical_area(): void
     {
         $appointment = Appointment::factory()->create();
 
         $this->assertTrue($appointment->client instanceof Client);
         $this->assertTrue($appointment->doctor instanceof Doctor);
-        $this->assertTrue($appointment->specialty instanceof MedicalSpecialty);
+        $this->assertTrue($appointment->medicalArea instanceof MedicalArea);
         $this->assertTrue(
-            $appointment->doctor->medicalSpecialties->contains($appointment->specialty)
+            $appointment->doctor->medicalAreas->contains($appointment->medicalArea)
         );
     }
 
-    public function test_client_doctor_and_specialty_can_have_multiple_appointments(): void
+    public function test_client_doctor_and_medical_area_can_have_multiple_appointments(): void
     {
         $client = Client::factory()->create();
         $doctor = Doctor::factory()->create();
-        $specialty = MedicalSpecialty::factory()->create();
-        $doctor->medicalSpecialties()->attach($specialty);
+        $medicalArea = MedicalArea::factory()->create();
+        $doctor->medicalAreas()->attach($medicalArea);
 
         Appointment::factory()->create([
             'client_id' => $client->id,
             'doctor_id' => $doctor->id,
-            'specialty_id' => $specialty->id,
+            'medical_area_id' => $medicalArea->id,
             'appointment_date' => '2026-10-30',
             'turn_number' => 1,
         ]);
         Appointment::factory()->create([
             'client_id' => $client->id,
             'doctor_id' => $doctor->id,
-            'specialty_id' => $specialty->id,
+            'medical_area_id' => $medicalArea->id,
             'appointment_date' => '2026-10-30',
             'turn_number' => 2,
         ]);
 
         $this->assertCount(2, $client->appointments);
         $this->assertCount(2, $doctor->appointments);
-        $this->assertCount(2, $specialty->appointments);
+        $this->assertCount(2, $medicalArea->appointments);
     }
 
     public function test_same_doctor_date_and_turn_number_conflicts(): void

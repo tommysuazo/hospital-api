@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\Public\MedicalSpecialtyController;
+use App\Http\Controllers\Public\MedicalAreaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/medical-specialties', [MedicalSpecialtyController::class, 'getPublicList'])
-    ->name('medical-specialties.index');
+Route::get('/medical-areas', [MedicalAreaController::class, 'getPublicList'])
+    ->name('medical-areas.index');
 
 Route::get('/user', function (Request $request) {
     return $request->user();

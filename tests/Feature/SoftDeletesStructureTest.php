@@ -8,7 +8,7 @@ use App\Models\Doctor;
 use App\Models\DoctorUnavailability;
 use App\Models\MedicalProcedure;
 use App\Models\MedicalResult;
-use App\Models\MedicalSpecialty;
+use App\Models\MedicalArea;
 use App\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -26,7 +26,7 @@ class SoftDeletesStructureTest extends TestCase
             'clients' => Client::class,
             'doctors' => Doctor::class,
             'doctor_unavailabilities' => DoctorUnavailability::class,
-            'medical_specialties' => MedicalSpecialty::class,
+            'medical_areas' => MedicalArea::class,
             'medical_procedures' => MedicalProcedure::class,
             'appointments' => Appointment::class,
             'medical_results' => MedicalResult::class,

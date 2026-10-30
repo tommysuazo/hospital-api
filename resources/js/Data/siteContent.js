@@ -15,7 +15,7 @@ export const insurers = [
 export const translations = {
   es: {
     nav: {
-      home: 'Inicio', doctors: 'Doctores', specialties: 'Especialidades', services: 'Servicios',
+      home: 'Inicio', doctors: 'Doctores', medicalAreas: 'Áreas médicas', services: 'Servicios',
       about: 'Nosotros', contact: 'Contacto', login: 'Ingresar', register: 'Registrar', openMenu: 'Abrir menú', closeMenu: 'Cerrar menú',
     },
     hero: {
@@ -36,8 +36,8 @@ export const translations = {
         { slug: 'colonoscopy', name: 'Colonoscopia', desc: 'Procedimientos especializados para el cuidado de tu salud digestiva.', schedule: 'Lun - Vie · 8:00 AM - 12:00 PM' },
       ],
     },
-    specialties: {
-      title: 'Especialidades médicas',
+    medicalAreas: {
+      title: 'Áreas médicas',
       items: ['Medicina General', 'Pediatría', 'Ginecología', 'Obstetricia', 'Cardiología', 'Psicología', 'Urología', 'Dermatología', 'Gastroenterología', 'Hepatología', 'Endocrinología', 'Geriatría'],
     },
     insurance: { title: 'Trabajamos con las principales aseguradoras' },
@@ -58,7 +58,7 @@ export const translations = {
       items: [
         { quote: 'Desde que llegué me orientaron con mucha amabilidad. El proceso fue claro y sentí que realmente escucharon mis necesidades.', name: 'María G.', context: 'Paciente de consulta general' },
         { quote: 'La atención fue puntual, humana y profesional. Mi familia y yo nos sentimos acompañados durante todo el proceso.', name: 'José R.', context: 'Familiar de paciente' },
-        { quote: 'Encontré especialistas atentos y un equipo dispuesto a explicar cada paso con paciencia. Eso hizo una gran diferencia.', name: 'Ana M.', context: 'Paciente de especialidad' },
+        { quote: 'Encontré especialistas atentos y un equipo dispuesto a explicar cada paso con paciencia. Eso hizo una gran diferencia.', name: 'Ana M.', context: 'Paciente de un área médica' },
       ],
     },
     aboutPage: {
@@ -141,7 +141,7 @@ export const translations = {
   },
   en: {
     nav: {
-      home: 'Home', doctors: 'Doctors', specialties: 'Specialties', services: 'Services',
+      home: 'Home', doctors: 'Doctors', medicalAreas: 'Medical Areas', services: 'Services',
       about: 'About Us', contact: 'Contact', login: 'Sign In', register: 'Register', openMenu: 'Open menu', closeMenu: 'Close menu',
     },
     hero: {
@@ -162,8 +162,8 @@ export const translations = {
         { slug: 'colonoscopy', name: 'Colonoscopy', desc: 'Specialized procedures for your digestive health.', schedule: 'Mon - Fri · 8:00 AM - 12:00 PM' },
       ],
     },
-    specialties: {
-      title: 'Medical Specialties',
+    medicalAreas: {
+      title: 'Medical Areas',
       items: ['General Medicine', 'Pediatrics', 'Gynecology', 'Obstetrics', 'Cardiology', 'Psychology', 'Urology', 'Dermatology', 'Gastroenterology', 'Hepatology', 'Endocrinology', 'Geriatrics'],
     },
     insurance: { title: 'We work with the leading insurance providers' },
@@ -184,7 +184,7 @@ export const translations = {
       items: [
         { quote: 'From the moment I arrived, the team guided me with kindness. The process was clear and I felt that my needs were truly heard.', name: 'María G.', context: 'General care patient' },
         { quote: 'The care was punctual, compassionate and professional. My family and I felt supported throughout the entire process.', name: 'José R.', context: 'Patient family member' },
-        { quote: 'I found attentive specialists and a team willing to explain every step patiently. That made a real difference.', name: 'Ana M.', context: 'Specialty care patient' },
+        { quote: 'I found attentive specialists and a team willing to explain every step patiently. That made a real difference.', name: 'Ana M.', context: 'Medical area patient' },
       ],
     },
     aboutPage: {

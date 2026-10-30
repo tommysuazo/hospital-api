@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Database\Factories\MedicalSpecialtyFactory;
+use Database\Factories\MedicalAreaFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,14 +14,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     'slug',
     'is_active',
 ])]
-class MedicalSpecialty extends Model
+class MedicalArea extends Model
 {
-    /** @use HasFactory<MedicalSpecialtyFactory> */
+    /** @use HasFactory<MedicalAreaFactory> */
     use HasFactory, SoftDeletes;
 
     public function translations(): HasMany
     {
-        return $this->hasMany(MedicalSpecialtyTranslation::class);
+        return $this->hasMany(MedicalAreaTranslation::class);
     }
 
     public function doctors(): BelongsToMany
@@ -31,7 +31,7 @@ class MedicalSpecialty extends Model
 
     public function appointments(): HasMany
     {
-        return $this->hasMany(Appointment::class, 'specialty_id');
+        return $this->hasMany(Appointment::class);
     }
 
     protected function casts(): array

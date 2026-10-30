@@ -49,7 +49,7 @@
   padding: 1.5rem clamp(2rem, 4vw, 3.5rem);
 }
 
-.doctor-hero__specialty,
+.doctor-hero__medical-area,
 .availability-section__eyebrow {
   display: inline-flex;
   align-items: center;

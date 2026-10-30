@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PublicMedicalProcedureResource;
-use App\Http\Resources\PublicMedicalSpecialtyResource;
+use App\Http\Resources\PublicMedicalAreaResource;
 use App\Services\PublicSiteService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -21,8 +21,8 @@ class PageController extends Controller
         $data = $this->publicSiteService->getHomeData();
 
         return Inertia::render('Public/Home', [
-            'specialties' => PublicMedicalSpecialtyResource::collection(
-                $data['specialties']
+            'medicalAreas' => PublicMedicalAreaResource::collection(
+                $data['medicalAreas']
             )->resolve($request),
             'procedures' => PublicMedicalProcedureResource::collection(
                 $data['procedures']

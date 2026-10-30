@@ -8,22 +8,22 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('doctor_medical_specialty', function (Blueprint $table) {
+        Schema::create('doctor_medical_area', function (Blueprint $table) {
             $table->id();
             $table->foreignId('doctor_id')->constrained();
-            $table->foreignId('medical_specialty_id')
+            $table->foreignId('medical_area_id')
                 ->constrained();
             $table->timestamps();
 
             $table->unique(
-                ['doctor_id', 'medical_specialty_id'],
-                'doctor_medical_specialty_unique'
+                ['doctor_id', 'medical_area_id'],
+                'doctor_medical_area_unique'
             );
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('doctor_medical_specialty');
+        Schema::dropIfExists('doctor_medical_area');
     }
 };

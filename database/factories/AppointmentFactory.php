@@ -7,7 +7,7 @@ use App\Enums\AppointmentStatusEnum;
 use App\Models\Appointment;
 use App\Models\Client;
 use App\Models\Doctor;
-use App\Models\MedicalSpecialty;
+use App\Models\MedicalArea;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -22,13 +22,13 @@ class AppointmentFactory extends Factory
             'uuid' => (string) Str::uuid(),
             'client_id' => Client::factory(),
             'doctor_id' => Doctor::factory(),
-            'specialty_id' => function (array $attributes): int {
+            'medical_area_id' => function (array $attributes): int {
                 $doctor = Doctor::query()->findOrFail($attributes['doctor_id']);
-                $specialty = MedicalSpecialty::factory()->create();
+                $medicalArea = MedicalArea::factory()->create();
 
-                $doctor->medicalSpecialties()->syncWithoutDetaching($specialty);
+                $doctor->medicalAreas()->syncWithoutDetaching($medicalArea);
 
-                return $specialty->id;
+                return $medicalArea->id;
             },
             'appointment_for' => fake()->randomElement(array_column(AppointmentForEnum::cases(), 'value')),
             'appointment_date' => fake()->dateTimeBetween('+1 day', '+3 months')

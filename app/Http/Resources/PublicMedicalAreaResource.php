@@ -5,11 +5,9 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MedicalSpecialtyResource extends JsonResource
+class PublicMedicalAreaResource extends JsonResource
 {
     /**
-     * Transform the resource into an array.
-     *
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
@@ -17,10 +15,9 @@ class MedicalSpecialtyResource extends JsonResource
         return [
             'id' => $this->id,
             'slug' => $this->slug,
-            'name' => $this->name,
-            'translations' => MedicalSpecialtyTranslationResource::collection(
-                $this->whenLoaded('translations')
-            ),
+            'names' => $this->translations
+                ->pluck('name', 'locale')
+                ->all(),
         ];
     }
 }

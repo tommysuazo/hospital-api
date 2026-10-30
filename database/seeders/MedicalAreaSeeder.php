@@ -2,15 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\MedicalSpecialty;
-use App\Models\MedicalSpecialtyTranslation;
+use App\Models\MedicalArea;
+use App\Models\MedicalAreaTranslation;
 use Illuminate\Database\Seeder;
 
-class MedicalSpecialtySeeder extends Seeder
+class MedicalAreaSeeder extends Seeder
 {
     public function run(): void
     {
-        $specialties = [
+        $medicalAreas = [
             'general-medicine' => [
                 'es' => 'Medicina General',
                 'en' => 'General Medicine',
@@ -61,16 +61,16 @@ class MedicalSpecialtySeeder extends Seeder
             ],
         ];
 
-        foreach ($specialties as $slug => $translations) {
-            $specialty = MedicalSpecialty::updateOrCreate(
+        foreach ($medicalAreas as $slug => $translations) {
+            $medicalArea = MedicalArea::updateOrCreate(
                 ['slug' => $slug],
                 ['is_active' => true]
             );
 
             foreach ($translations as $locale => $name) {
-                MedicalSpecialtyTranslation::updateOrCreate(
+                MedicalAreaTranslation::updateOrCreate(
                     [
-                        'medical_specialty_id' => $specialty->id,
+                        'medical_area_id' => $medicalArea->id,
                         'locale' => $locale,
                     ],
                     [

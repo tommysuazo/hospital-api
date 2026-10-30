@@ -31,7 +31,7 @@ const availableToday = computed(() => nextDay(props.doctor, props.today) === 0)
     </div>
     <div class="specialist-card__content">
       <div class="specialist-card__meta">
-        <p>{{ doctor.specialties.join(' · ') }}</p>
+        <p>{{ doctor.medicalAreas.join(' · ') }}</p>
         <span v-if="typeof doctor.rating === 'number'"><Star :size="14" />{{ doctor.rating.toFixed(1) }}<small v-if="doctor.reviewCount != null"> ({{ doctor.reviewCount }})</small></span>
       </div>
       <h2>{{ doctor.name }}</h2>

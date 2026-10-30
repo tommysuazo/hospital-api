@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\MedicalSpecialty;
+use App\Models\MedicalArea;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<MedicalSpecialty>
+ * @extends Factory<MedicalArea>
  */
-class MedicalSpecialtyFactory extends Factory
+class MedicalAreaFactory extends Factory
 {
     public function definition(): array
     {

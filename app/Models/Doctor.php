@@ -42,9 +42,9 @@ class Doctor extends Model
         return $this->hasMany(DoctorTranslation::class);
     }
 
-    public function medicalSpecialties(): BelongsToMany
+    public function medicalAreas(): BelongsToMany
     {
-        return $this->belongsToMany(MedicalSpecialty::class)->withTimestamps();
+        return $this->belongsToMany(MedicalArea::class)->withTimestamps();
     }
 
     public function schedules(): HasMany

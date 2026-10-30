@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
     'uuid',
     'client_id',
     'doctor_id',
-    'specialty_id',
+    'medical_area_id',
     'appointment_for',
     'appointment_date',
     'turn_number',
@@ -44,9 +44,9 @@ class Appointment extends Model
         return $this->belongsTo(Doctor::class);
     }
 
-    public function specialty(): BelongsTo
+    public function medicalArea(): BelongsTo
     {
-        return $this->belongsTo(MedicalSpecialty::class, 'specialty_id');
+        return $this->belongsTo(MedicalArea::class);
     }
 
     public function histories(): HasMany

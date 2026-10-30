@@ -7,11 +7,11 @@ defineOptions({ layout: PublicLayout })
 
 defineProps({
   doctors: { type: Array, default: () => [] },
-  specialties: { type: Array, default: () => [] },
+  medicalAreas: { type: Array, default: () => [] },
 })
 </script>
 
 <template>
   <Head title="Doctores" />
-  <DoctorsDirectory :doctors="doctors" :specialties="specialties" />
+  <DoctorsDirectory :doctors="doctors" :medical-areas="medicalAreas" />
 </template>

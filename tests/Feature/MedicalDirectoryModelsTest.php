@@ -6,8 +6,8 @@ use App\Models\Doctor;
 use App\Models\DoctorTranslation;
 use App\Models\MedicalProcedure;
 use App\Models\MedicalProcedureTranslation;
-use App\Models\MedicalSpecialty;
-use App\Models\MedicalSpecialtyTranslation;
+use App\Models\MedicalArea;
+use App\Models\MedicalAreaTranslation;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -79,12 +79,12 @@ class MedicalDirectoryModelsTest extends TestCase
         DoctorTranslation::factory()->for($doctor)->create(['locale' => 'es']);
         DoctorTranslation::factory()->for($doctor)->create(['locale' => 'en']);
 
-        $medicalSpecialty = MedicalSpecialty::factory()->create();
-        MedicalSpecialtyTranslation::factory()
-            ->for($medicalSpecialty, 'medicalSpecialty')
+        $medicalArea = MedicalArea::factory()->create();
+        MedicalAreaTranslation::factory()
+            ->for($medicalArea, 'medicalArea')
             ->create(['locale' => 'es']);
-        MedicalSpecialtyTranslation::factory()
-            ->for($medicalSpecialty, 'medicalSpecialty')
+        MedicalAreaTranslation::factory()
+            ->for($medicalArea, 'medicalArea')
             ->create(['locale' => 'en']);
 
         $procedure = MedicalProcedure::factory()->create();
@@ -96,33 +96,33 @@ class MedicalDirectoryModelsTest extends TestCase
             ->create(['locale' => 'en']);
 
         $this->assertCount(2, $doctor->translations);
-        $this->assertCount(2, $medicalSpecialty->translations);
+        $this->assertCount(2, $medicalArea->translations);
         $this->assertCount(2, $procedure->translations);
-        $this->assertFalse(Schema::hasColumn('medical_specialty_translations', 'description'));
+        $this->assertFalse(Schema::hasColumn('medical_area_translations', 'description'));
     }
 
-    public function test_doctors_and_medical_specialties_have_a_many_to_many_relationship(): void
+    public function test_doctors_and_medical_areas_have_a_many_to_many_relationship(): void
     {
         $doctor = Doctor::factory()->create();
-        $medicalSpecialties = MedicalSpecialty::factory()->count(2)->create();
+        $medicalAreas = MedicalArea::factory()->count(2)->create();
 
-        $doctor->medicalSpecialties()->attach($medicalSpecialties);
+        $doctor->medicalAreas()->attach($medicalAreas);
 
-        $this->assertCount(2, $doctor->medicalSpecialties);
-        $this->assertTrue($medicalSpecialties[0]->doctors->contains($doctor));
-        $this->assertTrue($medicalSpecialties[1]->doctors->contains($doctor));
-        $this->assertNotNull($doctor->medicalSpecialties[0]->pivot->created_at);
+        $this->assertCount(2, $doctor->medicalAreas);
+        $this->assertTrue($medicalAreas[0]->doctors->contains($doctor));
+        $this->assertTrue($medicalAreas[1]->doctors->contains($doctor));
+        $this->assertNotNull($doctor->medicalAreas[0]->pivot->created_at);
     }
 
-    public function test_the_same_medical_specialty_cannot_be_attached_twice_to_a_doctor(): void
+    public function test_the_same_medical_area_cannot_be_attached_twice_to_a_doctor(): void
     {
         $doctor = Doctor::factory()->create();
-        $medicalSpecialty = MedicalSpecialty::factory()->create();
-        $doctor->medicalSpecialties()->attach($medicalSpecialty);
+        $medicalArea = MedicalArea::factory()->create();
+        $doctor->medicalAreas()->attach($medicalArea);
 
         $this->expectException(QueryException::class);
 
-        $doctor->medicalSpecialties()->attach($medicalSpecialty);
+        $doctor->medicalAreas()->attach($medicalArea);
     }
 
     public function test_a_doctor_cannot_have_duplicate_translation_locales(): void
@@ -135,17 +135,17 @@ class MedicalDirectoryModelsTest extends TestCase
         DoctorTranslation::factory()->for($doctor)->create(['locale' => 'es']);
     }
 
-    public function test_a_medical_specialty_cannot_have_duplicate_translation_locales(): void
+    public function test_a_medical_area_cannot_have_duplicate_translation_locales(): void
     {
-        $medicalSpecialty = MedicalSpecialty::factory()->create();
-        MedicalSpecialtyTranslation::factory()
-            ->for($medicalSpecialty, 'medicalSpecialty')
+        $medicalArea = MedicalArea::factory()->create();
+        MedicalAreaTranslation::factory()
+            ->for($medicalArea, 'medicalArea')
             ->create(['locale' => 'en']);
 
         $this->expectException(QueryException::class);
 
-        MedicalSpecialtyTranslation::factory()
-            ->for($medicalSpecialty, 'medicalSpecialty')
+        MedicalAreaTranslation::factory()
+            ->for($medicalArea, 'medicalArea')
             ->create(['locale' => 'en']);
     }
 
@@ -165,12 +165,12 @@ class MedicalDirectoryModelsTest extends TestCase
 
     public function test_catalogs_use_slugs_and_boolean_active_casts(): void
     {
-        $medicalSpecialty = MedicalSpecialty::factory()->create();
+        $medicalArea = MedicalArea::factory()->create();
         $procedure = MedicalProcedure::factory()->create();
 
-        $this->assertNotEmpty($medicalSpecialty->slug);
+        $this->assertNotEmpty($medicalArea->slug);
         $this->assertNotEmpty($procedure->slug);
-        $this->assertIsBool($medicalSpecialty->is_active);
+        $this->assertIsBool($medicalArea->is_active);
         $this->assertIsBool($procedure->is_active);
     }
 }

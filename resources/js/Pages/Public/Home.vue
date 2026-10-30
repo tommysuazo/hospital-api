@@ -5,14 +5,14 @@ import ContactSection from '../../Components/ContactSection.vue'
 import HeroSection from '../../Components/HeroSection.vue'
 import InsuranceSection from '../../Components/InsuranceSection.vue'
 import ServicesSection from '../../Components/ServicesSection.vue'
-import SpecialtiesSection from '../../Components/SpecialtiesSection.vue'
+import MedicalAreasSection from '../../Components/MedicalAreasSection.vue'
 import TestimonialsSection from '../../Components/TestimonialsSection.vue'
 import PublicLayout from '../../Layouts/PublicLayout.vue'
 
 defineOptions({ layout: PublicLayout })
 
 defineProps({
-  specialties: { type: Array, default: () => [] },
+  medicalAreas: { type: Array, default: () => [] },
   procedures: { type: Array, default: () => [] },
 })
 </script>
@@ -22,7 +22,7 @@ defineProps({
   <main>
     <HeroSection />
     <ServicesSection :procedures="procedures" />
-    <SpecialtiesSection :specialties="specialties" />
+    <MedicalAreasSection :medical-areas="medicalAreas" />
     <InsuranceSection />
     <AboutSection />
     <TestimonialsSection />

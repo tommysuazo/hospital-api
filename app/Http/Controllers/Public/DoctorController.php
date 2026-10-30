@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PublicDoctorResource;
-use App\Http\Resources\PublicMedicalSpecialtyResource;
+use App\Http\Resources\PublicMedicalAreaResource;
 use App\Services\PublicSiteService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -24,8 +24,8 @@ class DoctorController extends Controller
             'doctors' => PublicDoctorResource::collection(
                 $data['doctors']
             )->resolve($request),
-            'specialties' => PublicMedicalSpecialtyResource::collection(
-                $data['specialties']
+            'medicalAreas' => PublicMedicalAreaResource::collection(
+                $data['medicalAreas']
             )->resolve($request),
         ]);
     }

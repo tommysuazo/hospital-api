@@ -34,8 +34,8 @@ class PublicDoctorResource extends JsonResource
             'descriptions' => $this->translations
                 ->pluck('professional_summary', 'locale')
                 ->all(),
-            'specialties' => PublicMedicalSpecialtyResource::collection(
-                $this->medicalSpecialties
+            'medicalAreas' => PublicMedicalAreaResource::collection(
+                $this->medicalAreas
             )->resolve($request),
             'workDays' => $this->schedules
                 ->pluck('day_of_week')

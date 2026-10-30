@@ -178,7 +178,7 @@
   padding: 6.5rem 2rem 7rem;
   background:
     radial-gradient(circle at 0% 100%, rgba(43, 174, 120, 0.12), transparent 30rem),
-    var(--color-specialties);
+    var(--color-medical-areas);
 }
 
 .staff-list__header { max-width: 720px; margin: 0 auto 3.5rem; text-align: center; }

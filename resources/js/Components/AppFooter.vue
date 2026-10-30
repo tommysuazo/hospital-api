@@ -7,7 +7,7 @@ import { useLanguage } from '../Composables/useLanguage'
 const { t } = useLanguage()
 const links = computed(() => [
   { label: t.value.nav.doctors, to: '/doctors' },
-  { label: t.value.nav.specialties, to: '/#specialties' },
+  { label: t.value.nav.medicalAreas, to: '/#medical-areas' },
   { label: t.value.nav.services, to: '/#services' },
   { label: t.value.nav.about, to: '/about' },
   { label: t.value.nav.contact, to: '/#contact' },

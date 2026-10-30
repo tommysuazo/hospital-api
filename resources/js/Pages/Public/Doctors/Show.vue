@@ -31,8 +31,8 @@ const doctor = computed(() => ({
   ...props.doctor,
   photo: props.doctor.photo || resolveDoctorPhoto(props.doctor.id),
   description: props.doctor.descriptions,
-  specialties: props.doctor.specialties.map(
-    (specialty) => specialty.names[language.value] || specialty.names.es || specialty.slug,
+  medicalAreas: props.doctor.medicalAreas.map(
+    (medicalArea) => medicalArea.names[language.value] || medicalArea.names.es || medicalArea.slug,
   ),
 }))
 const english = computed(() => language.value === 'en')
@@ -167,7 +167,7 @@ watch(() => props.doctor.uuid, () => {
             <img :src="doctor.photo" :alt="doctor.name" />
           </div>
           <div class="doctor-hero__content">
-            <span class="doctor-hero__specialty"><Stethoscope :size="15" />{{ doctor.specialties.join(' · ') }}</span>
+            <span class="doctor-hero__medical-area"><Stethoscope :size="15" />{{ doctor.medicalAreas.join(' · ') }}</span>
             <h1>{{ doctor.name }}</h1>
 
             <div class="doctor-hero__details">

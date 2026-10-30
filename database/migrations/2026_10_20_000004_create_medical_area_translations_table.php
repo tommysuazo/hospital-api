@@ -9,23 +9,23 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('medical_specialty_translations', function (Blueprint $table) {
+        Schema::create('medical_area_translations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('medical_specialty_id')
+            $table->foreignId('medical_area_id')
                 ->constrained();
             $table->enum('locale', array_column(LocaleEnum::cases(), 'value'));
             $table->string('name');
             $table->timestamps();
 
             $table->unique(
-                ['medical_specialty_id', 'locale'],
-                'medical_specialty_locale_unique'
+                ['medical_area_id', 'locale'],
+                'medical_area_locale_unique'
             );
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('medical_specialty_translations');
+        Schema::dropIfExists('medical_area_translations');
     }
 };
