@@ -33,4 +33,16 @@ class MedicalSpecialtyRepository
             ->where('is_active', true)
             ->get();
     }
+
+    /**
+     * @return Collection<int, MedicalSpecialty>
+     */
+    public function getPublicTranslatedList(): Collection
+    {
+        return $this->query()
+            ->select(['id', 'slug'])
+            ->with('translations')
+            ->where('is_active', true)
+            ->get();
+    }
 }
