@@ -2,30 +2,54 @@
 import { computed } from 'vue'
 import { ArrowRight, Clock } from '@lucide/vue'
 import { useLanguage } from '../Composables/useLanguage'
-import doctorIcon from '../Assets/images/icons/doctor.svg?raw'
-import radiographyIcon from '../Assets/images/icons/radiography.svg?raw'
-import sonographyIcon from '../Assets/images/icons/sonography.svg?raw'
 import colonoscopyIcon from '../Assets/images/icons/colonoscopy.svg?raw'
-import emergencyIcon from '../Assets/images/icons/emergency.svg?raw'
+import emergenciesIcon from '../Assets/images/icons/emergencies.svg?raw'
+import generalConsultationIcon from '../Assets/images/icons/general-consultation.svg?raw'
+import ultrasoundIcon from '../Assets/images/icons/ultrasound.svg?raw'
+import xRayIcon from '../Assets/images/icons/x-ray.svg?raw'
 
 const props = defineProps({
   procedures: { type: Array, default: () => [] },
 })
 
 const { language, t } = useLanguage()
-const serviceIcons = [doctorIcon, radiographyIcon, sonographyIcon, colonoscopyIcon, emergencyIcon]
+const fixedServiceSlugs = ['general-consultation', 'emergencies']
+const serviceIcons = {
+  'general-consultation': generalConsultationIcon,
+  emergencies: emergenciesIcon,
+  'x-ray': xRayIcon,
+  ultrasound: ultrasoundIcon,
+  colonoscopy: colonoscopyIcon,
+}
+
 const services = computed(() => {
-  if (!props.procedures.length) return t.value.services.items
+  const defaultServices = t.value.services.items
+  const defaultServicesBySlug = new Map(defaultServices.map((service) => [service.slug, service]))
+  const fixedServices = fixedServiceSlugs
+    .map((slug) => defaultServicesBySlug.get(slug))
+    .filter(Boolean)
+    .map((service) => ({ ...service, isProcedure: false }))
 
-  return props.procedures.map((procedure) => {
-    const translation = procedure.translations[language.value] || procedure.translations.es || {}
+  const procedures = props.procedures.length
+    ? props.procedures.map((procedure) => {
+        const translation = procedure.translations?.[language.value]
+          || procedure.translations?.es
+          || {}
+        const defaultService = defaultServicesBySlug.get(procedure.slug)
 
-    return {
-      name: translation.name,
-      desc: translation.short_description,
-      schedule: '',
-    }
-  })
+        return {
+          slug: procedure.slug,
+          name: translation.name || defaultService?.name || procedure.slug,
+          desc: translation.short_description || defaultService?.desc || '',
+          schedule: defaultService?.schedule || '',
+          isProcedure: true,
+        }
+      })
+    : defaultServices
+        .filter((service) => !fixedServiceSlugs.includes(service.slug))
+        .map((service) => ({ ...service, isProcedure: true }))
+
+  return [...fixedServices, ...procedures]
 })
 </script>
 
@@ -34,20 +58,20 @@ const services = computed(() => {
     <div class="section-heading"><h2 class="section-title">{{ t.services.title }}</h2></div>
     <div class="services__grid">
       <article
-        v-for="(service, index) in services"
-        :key="service.name"
+        v-for="service in services"
+        :key="service.slug"
         class="service-card"
         :class="{ 'service-card--emergency': service.available }"
       >
         <div class="service-card__heading">
           <span class="service-card__icon">
-            <span class="service-card__custom-icon" v-html="serviceIcons[index % serviceIcons.length]"></span>
+            <span class="service-card__custom-icon" v-html="serviceIcons[service.slug]"></span>
           </span>
           <h3>{{ service.name }}</h3>
         </div>
         <p>{{ service.desc }}</p>
         <span v-if="service.schedule" class="service-card__schedule"><Clock :size="14" />{{ service.schedule }}</span>
-        <button v-if="index !== 0 && !service.available" type="button" class="service-card__action">
+        <button v-if="service.isProcedure" type="button" class="service-card__action">
           {{ t.services.viewMore }}<ArrowRight :size="15" />
         </button>
       </article>

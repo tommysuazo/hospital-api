@@ -29,11 +29,11 @@ export const translations = {
     services: {
       title: 'Servicios pensados para tu bienestar', viewMore: 'Ver más',
       items: [
-        { name: 'Consulta General', desc: 'Atención médica primaria para el diagnóstico y seguimiento de tu salud.', schedule: 'Lun - Vie · 8:00 AM - 5:00 PM' },
-        { name: 'Radiografía', desc: 'Estudios de imagen para un diagnóstico rápido y preciso.', schedule: 'Lun - Sáb · 7:00 AM - 6:00 PM' },
-        { name: 'Sonografía', desc: 'Ecografías y ultrasonidos con equipos de alta precisión.', schedule: 'Lun - Vie · 8:00 AM - 4:00 PM' },
-        { name: 'Colonoscopia', desc: 'Procedimientos especializados para el cuidado de tu salud digestiva.', schedule: 'Lun - Vie · 8:00 AM - 12:00 PM' },
-        { name: 'Emergencias', desc: 'Atención inmediata para situaciones que requieren cuidado urgente.', schedule: '24 horas · 7 días a la semana', available: 'Disponible 24/7' },
+        { slug: 'general-consultation', name: 'Consulta General', desc: 'Atención médica primaria para el diagnóstico y seguimiento de tu salud.', schedule: 'Lun - Vie · 8:00 AM - 5:00 PM' },
+        { slug: 'emergencies', name: 'Emergencias', desc: 'Atención inmediata para situaciones que requieren cuidado urgente.', schedule: '24 horas · 7 días a la semana', available: 'Disponible 24/7' },
+        { slug: 'x-ray', name: 'Radiografía', desc: 'Estudios de imagen para un diagnóstico rápido y preciso.', schedule: 'Lun - Sáb · 7:00 AM - 6:00 PM' },
+        { slug: 'ultrasound', name: 'Sonografía', desc: 'Ecografías y ultrasonidos con equipos de alta precisión.', schedule: 'Lun - Vie · 8:00 AM - 4:00 PM' },
+        { slug: 'colonoscopy', name: 'Colonoscopia', desc: 'Procedimientos especializados para el cuidado de tu salud digestiva.', schedule: 'Lun - Vie · 8:00 AM - 12:00 PM' },
       ],
     },
     specialties: {
@@ -155,11 +155,11 @@ export const translations = {
     services: {
       title: 'Services designed for your well-being', viewMore: 'Learn more',
       items: [
-        { name: 'General Consultation', desc: 'Primary medical care for the diagnosis and follow-up of your health.', schedule: 'Mon - Fri · 8:00 AM - 5:00 PM' },
-        { name: 'X-Ray', desc: 'Imaging studies for a fast and accurate diagnosis.', schedule: 'Mon - Sat · 7:00 AM - 6:00 PM' },
-        { name: 'Ultrasound', desc: 'Sonography exams with high-precision equipment.', schedule: 'Mon - Fri · 8:00 AM - 4:00 PM' },
-        { name: 'Colonoscopy', desc: 'Specialized procedures for your digestive health.', schedule: 'Mon - Fri · 8:00 AM - 12:00 PM' },
-        { name: 'Emergencies', desc: 'Immediate care for situations that require urgent attention.', schedule: '24 hours · 7 days a week', available: 'Available 24/7' },
+        { slug: 'general-consultation', name: 'General Consultation', desc: 'Primary medical care for the diagnosis and follow-up of your health.', schedule: 'Mon - Fri · 8:00 AM - 5:00 PM' },
+        { slug: 'emergencies', name: 'Emergencies', desc: 'Immediate care for situations that require urgent attention.', schedule: '24 hours · 7 days a week', available: 'Available 24/7' },
+        { slug: 'x-ray', name: 'X-Ray', desc: 'Imaging studies for a fast and accurate diagnosis.', schedule: 'Mon - Sat · 7:00 AM - 6:00 PM' },
+        { slug: 'ultrasound', name: 'Ultrasound', desc: 'Sonography exams with high-precision equipment.', schedule: 'Mon - Fri · 8:00 AM - 4:00 PM' },
+        { slug: 'colonoscopy', name: 'Colonoscopy', desc: 'Specialized procedures for your digestive health.', schedule: 'Mon - Fri · 8:00 AM - 12:00 PM' },
       ],
     },
     specialties: {
