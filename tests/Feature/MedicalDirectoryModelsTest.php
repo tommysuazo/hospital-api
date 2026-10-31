@@ -30,6 +30,24 @@ class MedicalDirectoryModelsTest extends TestCase
         $this->assertNull($independentDoctor->user);
     }
 
+    public function test_doctor_factory_assigns_a_picture_according_to_the_user_gender(): void
+    {
+        $maleUser = User::factory()->create(['gender' => 'male']);
+        $femaleUser = User::factory()->create(['gender' => 'female']);
+
+        $maleDoctor = Doctor::factory()->for($maleUser)->create();
+        $femaleDoctor = Doctor::factory()->for($femaleUser)->create();
+
+        $this->assertContains($maleDoctor->picture, [
+            '/images/doctors/doctor-01.jpg',
+            '/images/doctors/doctor-02.jpg',
+        ]);
+        $this->assertContains($femaleDoctor->picture, [
+            '/images/doctors/doctor-03.jpg',
+            '/images/doctors/doctor-04.jpg',
+        ]);
+    }
+
     public function test_a_user_linked_to_a_doctor_can_be_soft_deleted(): void
     {
         $user = User::factory()->create();
