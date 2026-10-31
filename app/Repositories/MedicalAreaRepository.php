@@ -15,7 +15,7 @@ class MedicalAreaRepository
     {
         $query = MedicalArea::query();
 
-        $query->orderBy('slug');
+        $query->orderBy('id');
 
         return $query;
     }

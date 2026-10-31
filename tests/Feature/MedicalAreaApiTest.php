@@ -63,14 +63,14 @@ class MedicalAreaApiTest extends TestCase
             ->assertExactJson([
                 'data' => [
                     [
-                        'id' => $cardiology->id,
-                        'slug' => 'cardiology',
-                        'name' => 'Cardiology',
-                    ],
-                    [
                         'id' => $pediatrics->id,
                         'slug' => 'pediatrics',
                         'name' => 'Pediatrics',
+                    ],
+                    [
+                        'id' => $cardiology->id,
+                        'slug' => 'cardiology',
+                        'name' => 'Cardiology',
                     ],
                 ],
             ]);
