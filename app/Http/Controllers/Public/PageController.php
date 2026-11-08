@@ -50,13 +50,4 @@ class PageController extends Controller
         return Inertia::render('Public/Contact');
     }
 
-    public function login(): Response
-    {
-        return Inertia::render('Public/Auth/Portal', ['mode' => 'login']);
-    }
-
-    public function register(): Response
-    {
-        return Inertia::render('Public/Auth/Portal', ['mode' => 'register']);
-    }
 }
