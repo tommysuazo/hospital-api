@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\PublicMedicalProcedureResource;
 use App\Http\Resources\PublicMedicalAreaResource;
+use App\Http\Resources\PublicMedicalServiceCategoryResource;
+use App\Http\Resources\PublicMedicalServiceResource;
 use App\Services\PublicSiteService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -24,8 +25,8 @@ class PageController extends Controller
             'medicalAreas' => PublicMedicalAreaResource::collection(
                 $data['medicalAreas']
             )->resolve($request),
-            'procedures' => PublicMedicalProcedureResource::collection(
-                $data['procedures']
+            'medicalServices' => PublicMedicalServiceResource::collection(
+                $data['medicalServices']
             )->resolve($request),
         ]);
     }
@@ -33,6 +34,15 @@ class PageController extends Controller
     public function about(): Response
     {
         return Inertia::render('Public/About');
+    }
+
+    public function services(Request $request): Response
+    {
+        return Inertia::render('Public/Services/Index', [
+            'medicalServiceCategories' => PublicMedicalServiceCategoryResource::collection(
+                $this->publicSiteService->getMedicalServiceCategories()
+            )->resolve($request),
+        ]);
     }
 
     public function contact(): Response

@@ -11,7 +11,7 @@ const menuOpen = ref(false)
 const links = computed(() => [
   { label: t.value.nav.home, to: '/' },
   { label: t.value.nav.doctors, to: '/doctors' },
-  { label: t.value.nav.services, to: '/#services' },
+  { label: t.value.nav.services, to: '/services' },
   { label: t.value.nav.about, to: '/about' },
   { label: t.value.nav.contact, to: '/contact' },
 ])

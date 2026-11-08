@@ -2,18 +2,19 @@
 
 namespace Database\Factories;
 
-use App\Models\MedicalProcedure;
+use App\Models\MedicalServiceCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<MedicalProcedure>
+ * @extends Factory<MedicalServiceCategory>
  */
-class MedicalProcedureFactory extends Factory
+class MedicalServiceCategoryFactory extends Factory
 {
     public function definition(): array
     {
         return [
             'slug' => fake()->unique()->slug(),
+            'sort_order' => fake()->unique()->numberBetween(1, 1000),
             'is_active' => true,
         ];
     }

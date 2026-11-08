@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             MedicalAreaSeeder::class,
-            MedicalProcedureSeeder::class,
+            MedicalServiceSeeder::class,
         ]);
 
         User::factory()

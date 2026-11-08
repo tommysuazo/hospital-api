@@ -6,10 +6,12 @@ use App\Enums\DayOfWeekEnum;
 use App\Models\Doctor;
 use App\Models\DoctorSchedule;
 use App\Models\DoctorTranslation;
-use App\Models\MedicalProcedure;
-use App\Models\MedicalProcedureTranslation;
 use App\Models\MedicalArea;
 use App\Models\MedicalAreaTranslation;
+use App\Models\MedicalService;
+use App\Models\MedicalServiceCategory;
+use App\Models\MedicalServiceCategoryTranslation;
+use App\Models\MedicalServiceTranslation;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -29,13 +31,17 @@ class PublicSiteTest extends TestCase
             ->assertInertia(fn (Assert $page) => $page
                 ->component('Public/Home')
                 ->has('medicalAreas')
-                ->has('procedures'));
+                ->has('medicalServices'));
 
         $this->get('/about')->assertOk()->assertInertia(fn (Assert $page) => $page
             ->component('Public/About'));
 
         $this->get('/contact')->assertOk()->assertInertia(fn (Assert $page) => $page
             ->component('Public/Contact'));
+
+        $this->get('/services')->assertOk()->assertInertia(fn (Assert $page) => $page
+            ->component('Public/Services/Index')
+            ->has('medicalServiceCategories'));
 
         $this->get('/login')->assertOk()->assertInertia(fn (Assert $page) => $page
             ->component('Public/Auth/Portal')
@@ -46,7 +52,7 @@ class PublicSiteTest extends TestCase
             ->where('mode', 'register'));
     }
 
-    public function test_home_receives_translated_medical_areas_and_procedures(): void
+    public function test_home_receives_translated_medical_areas_and_services(): void
     {
         $medicalArea = MedicalArea::factory()->create(['slug' => 'cardiology']);
         MedicalAreaTranslation::factory()->for($medicalArea, 'medicalArea')->create([
@@ -54,8 +60,8 @@ class PublicSiteTest extends TestCase
             'name' => 'Cardiología',
         ]);
 
-        $procedure = MedicalProcedure::factory()->create(['slug' => 'radiography']);
-        MedicalProcedureTranslation::factory()->for($procedure, 'medicalProcedure')->create([
+        $medicalService = MedicalService::factory()->create(['slug' => 'x-ray']);
+        MedicalServiceTranslation::factory()->for($medicalService, 'medicalService')->create([
             'locale' => 'es',
             'name' => 'Radiografía',
             'short_description' => 'Estudio de imagen.',
@@ -64,8 +70,67 @@ class PublicSiteTest extends TestCase
         $this->get('/')->assertOk()->assertInertia(fn (Assert $page) => $page
             ->where('medicalAreas.0.slug', 'cardiology')
             ->where('medicalAreas.0.names.es', 'Cardiología')
-            ->where('procedures.0.slug', 'radiography')
-            ->where('procedures.0.translations.es.name', 'Radiografía'));
+            ->where('medicalServices.0.slug', 'x-ray')
+            ->where('medicalServices.0.translations.es.name', 'Radiografía'));
+    }
+
+    public function test_services_page_receives_the_public_medical_service_catalog(): void
+    {
+        $category = MedicalServiceCategory::factory()->create([
+            'slug' => 'diagnostic-imaging',
+            'sort_order' => 1,
+        ]);
+        MedicalServiceCategoryTranslation::create([
+            'medical_service_category_id' => $category->id,
+            'locale' => 'es',
+            'name' => 'Imágenes diagnósticas',
+        ]);
+
+        $medicalService = MedicalService::factory()
+            ->for($category, 'category')
+            ->create([
+                'slug' => 'chest-x-ray',
+                'sort_order' => 1,
+            ]);
+        MedicalServiceTranslation::factory()
+            ->for($medicalService, 'medicalService')
+            ->create([
+                'locale' => 'es',
+                'name' => 'Radiografía de tórax',
+                'short_description' => null,
+                'description' => null,
+            ]);
+
+        $this->get('/services')->assertOk()->assertInertia(fn (Assert $page) => $page
+            ->component('Public/Services/Index')
+            ->has('medicalServiceCategories', 1)
+            ->where('medicalServiceCategories.0.slug', 'diagnostic-imaging')
+            ->where('medicalServiceCategories.0.names.es', 'Imágenes diagnósticas')
+            ->where('medicalServiceCategories.0.medicalServices.0.slug', 'chest-x-ray')
+            ->where(
+                'medicalServiceCategories.0.medicalServices.0.url',
+                route('public.services.show', 'chest-x-ray')
+            )
+            ->where(
+                'medicalServiceCategories.0.medicalServices.0.translations.es.name',
+                'Radiografía de tórax'
+            ));
+
+        $this->get('/services/chest-x-ray')->assertOk()->assertInertia(fn (Assert $page) => $page
+            ->component('Public/Services/Show')
+            ->where('medicalService.slug', 'chest-x-ray')
+            ->where('medicalService.category.slug', 'diagnostic-imaging')
+            ->where('medicalService.translations.es.name', 'Radiografía de tórax'));
+    }
+
+    public function test_inactive_medical_services_do_not_have_public_detail_pages(): void
+    {
+        $medicalService = MedicalService::factory()->create([
+            'slug' => 'inactive-service',
+            'is_active' => false,
+        ]);
+
+        $this->get("/services/{$medicalService->slug}")->assertNotFound();
     }
 
     public function test_doctor_directory_and_profile_receive_real_model_data(): void

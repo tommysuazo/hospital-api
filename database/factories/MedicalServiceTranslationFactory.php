@@ -3,19 +3,19 @@
 namespace Database\Factories;
 
 use App\Enums\LocaleEnum;
-use App\Models\MedicalProcedure;
-use App\Models\MedicalProcedureTranslation;
+use App\Models\MedicalService;
+use App\Models\MedicalServiceTranslation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<MedicalProcedureTranslation>
+ * @extends Factory<MedicalServiceTranslation>
  */
-class MedicalProcedureTranslationFactory extends Factory
+class MedicalServiceTranslationFactory extends Factory
 {
     public function definition(): array
     {
         return [
-            'medical_procedure_id' => MedicalProcedure::factory(),
+            'medical_service_id' => MedicalService::factory(),
             'locale' => fake()->randomElement(array_column(LocaleEnum::cases(), 'value')),
             'name' => fake()->words(2, true),
             'short_description' => fake()->sentence(),

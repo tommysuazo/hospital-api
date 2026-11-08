@@ -7,25 +7,22 @@ import {
 import { computed } from 'vue'
 import maternityImage from '../Assets/images/maternity/mother-and-newborn.png'
 import { useLanguage } from '../Composables/useLanguage'
-import colonoscopyIcon from '../Assets/images/icons/colonoscopy.svg?raw'
 import emergenciesIcon from '../Assets/images/icons/emergencies.svg?raw'
 import generalConsultationIcon from '../Assets/images/icons/general-consultation.svg?raw'
 import ultrasoundIcon from '../Assets/images/icons/ultrasound.svg?raw'
 import xRayIcon from '../Assets/images/icons/x-ray.svg?raw'
 
 const props = defineProps({
-  procedures: { type: Array, default: () => [] },
+  medicalServices: { type: Array, default: () => [] },
 })
 
 const { language, t } = useLanguage()
-const fixedServiceSlugs = ['general-consultation', 'emergencies']
+const supportingServiceSlugs = ['general-consultation', 'emergencies', 'ultrasound', 'x-ray']
 const serviceIcons = {
   'general-consultation': generalConsultationIcon,
   emergencies: emergenciesIcon,
   'x-ray': xRayIcon,
-  radiography: xRayIcon,
   ultrasound: ultrasoundIcon,
-  colonoscopy: colonoscopyIcon,
 }
 
 const benefitIcons = [HeartPulse, Baby]
@@ -33,27 +30,24 @@ const benefitIcons = [HeartPulse, Baby]
 const supportingServices = computed(() => {
   const defaultServices = t.value.services.items
   const defaultServicesBySlug = new Map(defaultServices.map((service) => [service.slug, service]))
-  const fixedServices = fixedServiceSlugs
-    .map((slug) => defaultServicesBySlug.get(slug))
-    .filter(Boolean)
+  const medicalServicesBySlug = new Map(
+    props.medicalServices.map((medicalService) => [medicalService.slug, medicalService]),
+  )
 
-  const procedures = props.procedures.length
-    ? props.procedures.map((procedure) => {
-        const translation = procedure.translations?.[language.value]
-          || procedure.translations?.es
-          || {}
-        const defaultService = defaultServicesBySlug.get(procedure.slug)
+  return supportingServiceSlugs.map((slug) => {
+    const medicalService = medicalServicesBySlug.get(slug)
+    const translation = medicalService?.translations?.[language.value]
+      || medicalService?.translations?.es
+      || {}
+    const defaultService = defaultServicesBySlug.get(slug)
 
-        return {
-          slug: procedure.slug,
-          name: translation.name || defaultService?.name || procedure.slug,
-          desc: translation.short_description || defaultService?.desc || '',
-          schedule: defaultService?.schedule || '',
-        }
-      })
-    : defaultServices.filter((service) => !fixedServiceSlugs.includes(service.slug))
-
-  return [...fixedServices, ...procedures]
+    return {
+      slug,
+      name: translation.name || defaultService?.name || slug,
+      desc: translation.short_description || defaultService?.desc || '',
+      schedule: defaultService?.schedule || '',
+    }
+  })
 })
 </script>
 
@@ -256,7 +250,7 @@ const supportingServices = computed(() => {
 
 .supporting-services__grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.8rem;
 }
 
@@ -314,7 +308,10 @@ const supportingServices = computed(() => {
   -webkit-line-clamp: 2;
 }
 
-.supporting-service__schedule { color: var(--color-accent-dark) !important; font-weight: 700; }
+.supporting-service__schedule {
+  color: var(--color-accent-dark) !important;
+  font-weight: 700;
+}
 
 @media (max-width: 1180px) {
   .supporting-services__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }

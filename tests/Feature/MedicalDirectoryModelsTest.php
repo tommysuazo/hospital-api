@@ -4,10 +4,10 @@ namespace Tests\Feature;
 
 use App\Models\Doctor;
 use App\Models\DoctorTranslation;
-use App\Models\MedicalProcedure;
-use App\Models\MedicalProcedureTranslation;
 use App\Models\MedicalArea;
 use App\Models\MedicalAreaTranslation;
+use App\Models\MedicalService;
+use App\Models\MedicalServiceTranslation;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -105,17 +105,17 @@ class MedicalDirectoryModelsTest extends TestCase
             ->for($medicalArea, 'medicalArea')
             ->create(['locale' => 'en']);
 
-        $procedure = MedicalProcedure::factory()->create();
-        MedicalProcedureTranslation::factory()
-            ->for($procedure, 'medicalProcedure')
+        $medicalService = MedicalService::factory()->create();
+        MedicalServiceTranslation::factory()
+            ->for($medicalService, 'medicalService')
             ->create(['locale' => 'es']);
-        MedicalProcedureTranslation::factory()
-            ->for($procedure, 'medicalProcedure')
+        MedicalServiceTranslation::factory()
+            ->for($medicalService, 'medicalService')
             ->create(['locale' => 'en']);
 
         $this->assertCount(2, $doctor->translations);
         $this->assertCount(2, $medicalArea->translations);
-        $this->assertCount(2, $procedure->translations);
+        $this->assertCount(2, $medicalService->translations);
         $this->assertFalse(Schema::hasColumn('medical_area_translations', 'description'));
     }
 
@@ -167,28 +167,29 @@ class MedicalDirectoryModelsTest extends TestCase
             ->create(['locale' => 'en']);
     }
 
-    public function test_a_medical_procedure_cannot_have_duplicate_translation_locales(): void
+    public function test_a_medical_service_cannot_have_duplicate_translation_locales(): void
     {
-        $procedure = MedicalProcedure::factory()->create();
-        MedicalProcedureTranslation::factory()
-            ->for($procedure, 'medicalProcedure')
+        $medicalService = MedicalService::factory()->create();
+        MedicalServiceTranslation::factory()
+            ->for($medicalService, 'medicalService')
             ->create(['locale' => 'es']);
 
         $this->expectException(QueryException::class);
 
-        MedicalProcedureTranslation::factory()
-            ->for($procedure, 'medicalProcedure')
+        MedicalServiceTranslation::factory()
+            ->for($medicalService, 'medicalService')
             ->create(['locale' => 'es']);
     }
 
     public function test_catalogs_use_slugs_and_boolean_active_casts(): void
     {
         $medicalArea = MedicalArea::factory()->create();
-        $procedure = MedicalProcedure::factory()->create();
+        $medicalService = MedicalService::factory()->create();
 
         $this->assertNotEmpty($medicalArea->slug);
-        $this->assertNotEmpty($procedure->slug);
+        $this->assertNotEmpty($medicalService->slug);
         $this->assertIsBool($medicalArea->is_active);
-        $this->assertIsBool($procedure->is_active);
+        $this->assertIsBool($medicalService->is_active);
+        $this->assertIsInt($medicalService->sort_order);
     }
 }

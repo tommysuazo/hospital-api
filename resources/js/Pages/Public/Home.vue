@@ -13,7 +13,7 @@ defineOptions({ layout: PublicLayout })
 
 defineProps({
   medicalAreas: { type: Array, default: () => [] },
-  procedures: { type: Array, default: () => [] },
+  medicalServices: { type: Array, default: () => [] },
 })
 </script>
 
@@ -21,7 +21,7 @@ defineProps({
   <Head title="Inicio" />
   <main>
     <HeroSection />
-    <ServicesSection :procedures="procedures" />
+    <ServicesSection :medical-services="medicalServices" />
     <MedicalAreasSection :medical-areas="medicalAreas" />
     <InsuranceSection />
     <AboutSection />
