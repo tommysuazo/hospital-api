@@ -14,7 +14,7 @@ const mainNavigation = [
 ]
 
 const navigation = [
-  { label: 'Solicitar cita', icon: CalendarPlus },
+  { label: 'Solicitar cita', icon: CalendarPlus, href: '/portal/appointments/create' },
   { label: 'Historial de citas', icon: CalendarDays },
   { label: 'Resultados médicos', icon: FlaskConical },
   { label: 'Historial de actividades', icon: Activity },
@@ -59,7 +59,17 @@ function isActive(href) {
       <p class="client-sidebar__group-label client-sidebar__group-label--secondary">Mi salud</p>
       <ul>
         <li v-for="item in navigation" :key="item.label">
-          <button type="button" class="client-sidebar__item" @click="emit('provisional'); emit('close')">
+          <Link
+            v-if="item.href"
+            :href="item.href"
+            class="client-sidebar__item"
+            :class="{ 'client-sidebar__item--active': isActive(item.href) }"
+            :aria-current="isActive(item.href) ? 'page' : undefined"
+            @click="emit('close')"
+          >
+            <component :is="item.icon" :size="19" /> <span>{{ item.label }}</span>
+          </Link>
+          <button v-else type="button" class="client-sidebar__item" @click="emit('provisional'); emit('close')">
             <component :is="item.icon" :size="19" /> <span>{{ item.label }}</span>
           </button>
         </li>

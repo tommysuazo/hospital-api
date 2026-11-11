@@ -170,7 +170,7 @@
 .portal-empty-state h3 { margin: 0; color: #33425a; font-size: 0.95rem; }
 .portal-empty-state p { max-width: 440px; margin: 0.55rem 0 1.25rem; color: #7e899a; font-size: 0.78rem; line-height: 1.6; }
 .portal-button { display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem; min-height: 41px; padding: 0.65rem 1rem; border-radius: 9px; font-size: 0.76rem; font-weight: 700; cursor: pointer; }
-.portal-button--primary { border: 0; color: white; background: var(--color-accent); box-shadow: 0 7px 16px rgba(43, 174, 120, 0.2); }
+.portal-button--primary { border: 0; color: white; background: var(--color-accent); box-shadow: 0 7px 16px rgba(43, 174, 120, 0.2); text-decoration: none; }
 
 .portal-compact-empty { display: flex; align-items: center; gap: 0.9rem; min-height: 130px; padding: 1.35rem; }
 .portal-compact-empty > span { display: grid; place-items: center; flex: 0 0 48px; height: 48px; border-radius: 13px; color: #2685b7; background: #eaf5fa; }

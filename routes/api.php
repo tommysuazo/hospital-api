@@ -1,12 +1,10 @@
 <?php
 
-use App\Http\Controllers\Public\MedicalAreaController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/medical-areas', [MedicalAreaController::class, 'getPublicList'])
+Route::get('/medical-areas', [\App\Http\Controllers\Public\MedicalAreaController::class, 'getPublicList'])
     ->name('medical-areas.index');
 
-Route::get('/user', function (Request $request) {
+Route::get('/user', function (\Illuminate\Http\Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');

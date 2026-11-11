@@ -1,6 +1,6 @@
 <script setup>
 import { computed, inject } from 'vue'
-import { Head, usePage } from '@inertiajs/vue3'
+import { Head, Link, usePage } from '@inertiajs/vue3'
 import { ArrowRight, CalendarCheck, CalendarPlus, CircleCheck, FlaskConical, HeartPulse } from '@lucide/vue'
 import ClientPortalLayout from '../../Layouts/ClientPortalLayout.vue'
 
@@ -27,7 +27,7 @@ const today = new Intl.DateTimeFormat('es-DO', { weekday: 'long', day: 'numeric'
     <div class="client-dashboard__grid client-dashboard__grid--primary">
       <article class="portal-panel portal-panel--appointments">
         <header class="portal-panel__header"><div><h2>Próximas citas</h2><p>Tus consultas programadas aparecerán aquí.</p></div><button type="button" @click="showPortalNotice()">Ver todas <ArrowRight :size="15" /></button></header>
-        <div class="portal-empty-state"><span><CalendarCheck :size="27" /></span><h3>No tienes citas programadas</h3><p>Cuando conectemos el módulo de citas podrás solicitarlas y administrarlas desde este espacio.</p><button type="button" class="portal-button portal-button--primary" @click="showPortalNotice()"><CalendarPlus :size="17" /> Solicitar cita</button></div>
+        <div class="portal-empty-state"><span><CalendarCheck :size="27" /></span><h3>No tienes citas programadas</h3><p>Solicita una consulta con el especialista y la fecha que mejor se ajusten a tus necesidades.</p><Link href="/portal/appointments/create" class="portal-button portal-button--primary"><CalendarPlus :size="17" /> Solicitar cita</Link></div>
       </article>
 
       <aside class="portal-panel">
