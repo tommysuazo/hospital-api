@@ -15,7 +15,10 @@ class PublicMedicalServiceResource extends JsonResource
         return [
             'id' => $this->id,
             'slug' => $this->slug,
-            'url' => route('public.services.show', $this->slug),
+            'url' => route(
+                $request->routeIs('client.services.*') ? 'client.services.show' : 'public.services.show',
+                $this->slug
+            ),
             'category' => $this->whenLoaded('category', fn () => [
                 'id' => $this->category->id,
                 'slug' => $this->category->slug,

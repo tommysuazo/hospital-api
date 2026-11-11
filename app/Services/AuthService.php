@@ -59,7 +59,7 @@ class AuthService
         return $challenge;
     }
 
-    public function startLogin(array $data, ?string $ipAddress, ?string $userAgent): AuthVerificationCode
+    public function startLogin(array $data, ?string $ipAddress, ?string $userAgent): ?AuthVerificationCode
     {
         $accountType = $data['access_type'];
         $account = $accountType === self::ACCOUNT_STAFF
@@ -68,6 +68,13 @@ class AuthService
 
         if (! $account || ! Hash::check($data['password'], $account->password)) {
             throw new KnownException('Las credenciales proporcionadas no son válidas.');
+        }
+
+        if ($account instanceof Client && $account->email_verified_at !== null) {
+            $this->clientService->updateLastLogin($account);
+            Auth::guard('client')->login($account, (bool) ($data['remember'] ?? false));
+
+            return null;
         }
 
         [$challenge, $code] = $this->createChallenge(

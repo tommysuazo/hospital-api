@@ -20,6 +20,8 @@ defineOptions({ layout: PublicLayout })
 
 const props = defineProps({
   doctor: { type: Object, required: true },
+  backHref: { type: String, default: '/doctors' },
+  embedded: { type: Boolean, default: false },
 })
 
 const { language } = useLanguage()
@@ -158,9 +160,9 @@ watch(() => props.doctor.uuid, () => {
 
 <template>
   <Head :title="doctor.name" />
-  <main class="doctor-profile">
+  <component :is="embedded ? 'div' : 'main'" class="doctor-profile">
       <div class="doctor-profile__container">
-        <Link class="doctor-profile__back" href="/doctors"><ArrowLeft :size="17" />{{ copy.back }}</Link>
+        <Link class="doctor-profile__back" :href="backHref"><ArrowLeft :size="17" />{{ copy.back }}</Link>
 
         <section class="doctor-hero">
           <div class="doctor-hero__image">
@@ -254,5 +256,5 @@ watch(() => props.doctor.uuid, () => {
             </div>
         </section>
       </div>
-  </main>
+  </component>
 </template>

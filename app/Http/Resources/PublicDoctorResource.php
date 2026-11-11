@@ -26,7 +26,10 @@ class PublicDoctorResource extends JsonResource
         return [
             'id' => $this->id,
             'uuid' => $this->uuid,
-            'url' => route('public.doctors.show', $this->uuid),
+            'url' => route(
+                $request->routeIs('client.doctors.*') ? 'client.doctors.show' : 'public.doctors.show',
+                $this->uuid
+            ),
             'name' => trim("{$this->user->first_name} {$this->user->last_name}"),
             'photo' => $this->picture,
             'room' => $this->consulting_room,

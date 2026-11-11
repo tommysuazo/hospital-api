@@ -41,19 +41,19 @@ class AuthenticationFlowTest extends TestCase
         $code = $this->verificationCodeSentTo($client);
 
         $this->post('/auth/verify-code', ['code' => $code])
-            ->assertRedirect(route('public.home'));
+            ->assertRedirect(route('client.dashboard'));
 
         $this->assertAuthenticatedAs($client->fresh(), 'client');
         $this->assertNotNull($client->fresh()->email_verified_at);
     }
 
-    public function test_client_login_requires_a_valid_password_and_then_a_verification_code(): void
+    public function test_unverified_client_login_requires_a_valid_password_and_then_a_verification_code(): void
     {
         Notification::fake();
         $client = Client::factory()->create([
             'email' => 'patient@example.com',
             'password' => 'Password123!',
-            'email_verified_at' => now(),
+            'email_verified_at' => null,
         ]);
 
         $this->post('/login', [
@@ -72,8 +72,31 @@ class AuthenticationFlowTest extends TestCase
 
         $this->assertGuest('client');
         $this->post('/auth/verify-code', ['code' => $this->verificationCodeSentTo($client)])
-            ->assertRedirect(route('public.home'));
+            ->assertRedirect(route('client.dashboard'));
         $this->assertAuthenticatedAs($client, 'client');
+        $this->assertNotNull($client->fresh()->email_verified_at);
+    }
+
+    public function test_verified_client_login_does_not_require_a_verification_code(): void
+    {
+        Notification::fake();
+        $client = Client::factory()->create([
+            'email' => 'verified-patient@example.com',
+            'password' => 'Password123!',
+            'email_verified_at' => now(),
+        ]);
+
+        $this->post('/login', [
+            'access_type' => 'client',
+            'email' => $client->email,
+            'password' => 'Password123!',
+            'remember' => true,
+        ])->assertRedirect(route('client.dashboard'))
+            ->assertSessionMissing('auth.challenge_uuid');
+
+        $this->assertAuthenticatedAs($client, 'client');
+        $this->assertNotNull($client->fresh()->last_login_at);
+        Notification::assertNothingSent();
     }
 
     public function test_staff_can_login_but_cannot_use_the_public_password_recovery_flow(): void

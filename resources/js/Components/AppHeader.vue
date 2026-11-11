@@ -2,11 +2,17 @@
 import { Link } from '@inertiajs/vue3'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { Menu, X } from '@lucide/vue'
+import rdFlag from '../Assets/images/flags/rd_flag.png'
+import usFlag from '../Assets/images/flags/us_flag.png'
 import navLogo from '../Assets/images/nav-logo.png'
 import { useLanguage } from '../Composables/useLanguage'
 
 const { language, setLanguage, t } = useLanguage()
 const menuOpen = ref(false)
+const languageOptions = [
+  { code: 'es', label: 'Español', flag: rdFlag },
+  { code: 'en', label: 'English', flag: usFlag },
+]
 
 const links = computed(() => [
   { label: t.value.nav.home, to: '/' },
@@ -42,17 +48,19 @@ onBeforeUnmount(() => document.body.classList.remove('is-menu-open'))
       </ul>
 
       <div class="site-header__actions">
-        <div class="language-toggle" aria-label="Seleccionar idioma">
+        <div class="language-selector" role="group" aria-label="Seleccionar idioma">
           <button
-            v-for="option in ['es', 'en']"
-            :key="option"
+            v-for="option in languageOptions"
+            :key="option.code"
             type="button"
-            class="language-toggle__button"
-            :class="{ 'language-toggle__button--active': language === option }"
-            :aria-pressed="language === option"
-            @click="setLanguage(option)"
+            class="language-selector__option"
+            :class="{ 'language-selector__option--active': language === option.code }"
+            :aria-label="option.label"
+            :aria-pressed="language === option.code"
+            @click="setLanguage(option.code)"
           >
-            {{ option.toUpperCase() }}
+            <img class="language-selector__flag" :src="option.flag" alt="" aria-hidden="true" />
+            <span>{{ option.code.toUpperCase() }}</span>
           </button>
         </div>
         <Link class="site-header__login" href="/login">{{ t.nav.login }}</Link>
@@ -80,16 +88,19 @@ onBeforeUnmount(() => document.body.classList.remove('is-menu-open'))
         </Link>
       </nav>
       <div class="mobile-menu__footer">
-        <div class="language-toggle">
+        <div class="language-selector mobile-menu__language" role="group" aria-label="Seleccionar idioma">
           <button
-            v-for="option in ['es', 'en']"
-            :key="option"
+            v-for="option in languageOptions"
+            :key="option.code"
             type="button"
-            class="language-toggle__button"
-            :class="{ 'language-toggle__button--active': language === option }"
-            @click="setLanguage(option)"
+            class="language-selector__option"
+            :class="{ 'language-selector__option--active': language === option.code }"
+            :aria-label="option.label"
+            :aria-pressed="language === option.code"
+            @click="setLanguage(option.code)"
           >
-            {{ option.toUpperCase() }}
+            <img class="language-selector__flag" :src="option.flag" alt="" aria-hidden="true" />
+            <span>{{ option.code.toUpperCase() }}</span>
           </button>
         </div>
         <Link class="site-header__login" href="/login" @click="closeMenu">{{ t.nav.login }}</Link>
@@ -170,29 +181,46 @@ onBeforeUnmount(() => document.body.classList.remove('is-menu-open'))
   gap: 1rem;
 }
 
-.language-toggle {
-  display: flex;
+.language-selector {
+  display: inline-flex;
   align-items: center;
-  width: max-content;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.55);
+  gap: 0.2rem;
+  padding: 0.2rem;
   border-radius: var(--radius-pill);
+  background: #17366e;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-.language-toggle__button {
-  padding: 0.35rem 0.65rem;
+.language-selector__option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-width: 60px;
+  height: 34px;
+  padding: 0 0.55rem;
   border: 0;
-  color: var(--color-white);
+  border-radius: var(--radius-pill);
+  color: rgba(255, 255, 255, 0.72);
   background: transparent;
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.72rem;
+  font-weight: 750;
   cursor: pointer;
-  transition: var(--transition);
+  transition: color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.language-toggle__button--active {
-  color: #112b63;
+.language-selector__option--active {
+  color: #17366e;
   background: var(--color-white);
+  box-shadow: 0 3px 10px rgba(9, 29, 67, 0.2);
+}
+
+.language-selector__flag {
+  width: 22px;
+  height: auto;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(9, 29, 67, 0.25);
 }
 
 .site-header__login {
@@ -301,6 +329,10 @@ onBeforeUnmount(() => document.body.classList.remove('is-menu-open'))
   border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.mobile-menu__language {
+  align-self: flex-start;
+}
+
 .menu-fade-enter-active,
 .menu-fade-leave-active { transition: opacity 0.2s ease; }
 .menu-fade-enter-from,
@@ -314,7 +346,7 @@ onBeforeUnmount(() => document.body.classList.remove('is-menu-open'))
 
 @media (max-width: 900px) {
   .site-header__links,
-  .site-header__actions > .language-toggle,
+  .site-header__actions > .language-selector,
   .site-header__actions > .site-header__login,
   .site-header__actions > .site-header__register { display: none; }
   .site-header__menu-button { display: flex; }

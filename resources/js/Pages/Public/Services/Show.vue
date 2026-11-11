@@ -10,6 +10,8 @@ defineOptions({ layout: PublicLayout })
 
 const props = defineProps({
   medicalService: { type: Object, required: true },
+  backHref: { type: String, default: '/services' },
+  embedded: { type: Boolean, default: false },
 })
 
 const { language, t } = useLanguage()
@@ -33,9 +35,9 @@ const service = computed(() => {
 <template>
   <Head :title="service.name" />
 
-  <main class="service-detail">
+  <component :is="embedded ? 'div' : 'main'" class="service-detail">
     <div class="service-detail__container">
-      <Link class="service-detail__back" href="/services">
+      <Link class="service-detail__back" :href="backHref">
         <ArrowLeft :size="17" aria-hidden="true" />
         {{ t.servicesPage.detail.back }}
       </Link>
@@ -80,5 +82,5 @@ const service = computed(() => {
         <Link href="/contact">{{ t.servicesPage.detail.contact }}</Link>
       </section>
     </div>
-  </main>
+  </component>
 </template>

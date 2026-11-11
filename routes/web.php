@@ -1,7 +1,10 @@
 <?php
 
-use App\Http\Controllers\Public\DoctorController;
+use App\Http\Controllers\Client\DashboardController;
+use App\Http\Controllers\Client\DoctorController as ClientDoctorController;
+use App\Http\Controllers\Client\MedicalServiceController as ClientMedicalServiceController;
 use App\Http\Controllers\Public\AuthController;
+use App\Http\Controllers\Public\DoctorController;
 use App\Http\Controllers\Public\MedicalServiceController;
 use App\Http\Controllers\Public\PageController;
 use Illuminate\Support\Facades\Route;
@@ -32,5 +35,19 @@ Route::name('public.')->group(function () {
         Route::post('/forgot', [AuthController::class, 'sendPasswordResetCode'])->middleware('throttle:5,1')->name('forgot.store');
         Route::get('/reset', [AuthController::class, 'showResetPassword'])->name('reset.show');
         Route::post('/reset', [AuthController::class, 'resetPassword'])->middleware('throttle:5,1')->name('reset.store');
+    });
+});
+
+Route::prefix('portal')->name('client.')->middleware('auth:client')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::prefix('doctors')->name('doctors.')->group(function () {
+        Route::get('/', [ClientDoctorController::class, 'index'])->name('index');
+        Route::get('/{doctor}', [ClientDoctorController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('services')->name('services.')->group(function () {
+        Route::get('/', [ClientMedicalServiceController::class, 'index'])->name('index');
+        Route::get('/{medicalService}', [ClientMedicalServiceController::class, 'show'])->name('show');
     });
 });

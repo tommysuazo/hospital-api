@@ -57,6 +57,14 @@ class AuthController extends Controller
         try {
             $data = $request->validated();
             $challenge = $this->authService->startLogin($data, $request->ip(), $request->userAgent());
+
+            if ($challenge === null) {
+                $request->session()->forget(['auth.challenge_uuid', 'auth.masked_email', 'auth.challenge_purpose', 'auth.challenge_fake']);
+                $request->session()->regenerate();
+
+                return to_route('client.dashboard')->with('status', 'La sesión se inició correctamente.');
+            }
+
             $this->storeChallenge($request, $challenge, $data['email']);
 
             return to_route('public.auth.verify.show');
@@ -103,7 +111,11 @@ class AuthController extends Controller
             $request->session()->forget(['auth.challenge_uuid', 'auth.masked_email', 'auth.challenge_purpose', 'auth.challenge_fake']);
             $request->session()->regenerate();
 
-            return to_route('public.home')->with('status', 'Tu correo fue validado y la sesión se inició correctamente.');
+            $destination = $challenge->account_type === AuthService::ACCOUNT_CLIENT
+                ? 'client.dashboard'
+                : 'public.home';
+
+            return to_route($destination)->with('status', 'Tu correo fue validado y la sesión se inició correctamente.');
         } catch (KnownException $exception) {
             return back()->withErrors(['code' => $exception->getMessage()]);
         } catch (Throwable $exception) {

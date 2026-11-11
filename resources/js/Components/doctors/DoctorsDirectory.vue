@@ -72,7 +72,7 @@ function updatePage(value) {
 </script>
 
 <template>
-  <main class="directory-page">
+  <div class="directory-page">
     <div class="directory-container">
       <h1 class="directory-title">{{ english ? 'Find your specialist' : 'Encuentra tu especialista' }}</h1>
 
@@ -126,5 +126,5 @@ function updatePage(value) {
         @change="updatePage"
       />
     </div>
-  </main>
+  </div>
 </template>

@@ -13,5 +13,7 @@ defineProps({
 
 <template>
   <Head title="Doctores" />
-  <DoctorsDirectory :doctors="doctors" :medical-areas="medicalAreas" />
+  <main>
+    <DoctorsDirectory :doctors="doctors" :medical-areas="medicalAreas" />
+  </main>
 </template>
