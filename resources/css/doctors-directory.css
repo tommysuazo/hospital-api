@@ -305,7 +305,7 @@
 .specialist-card__availability--today { color: var(--directory-teal); }
 .specialist-card__content { padding: 1rem; }
 .specialist-card__meta { display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; margin-bottom: 0.25rem; }
-.specialist-card__meta p { margin: 0; color: var(--directory-teal); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+.specialist-card__meta p { margin: 0; color: var(--directory-teal); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; width: 100%; text-align: center; }
 .specialist-card__meta > span { display: flex; align-items: center; font-size: 0.75rem; white-space: nowrap; }
 .specialist-card__meta svg { margin-right: 0.2rem; color: var(--color-accent); fill: currentColor; }
 .specialist-card__meta small { color: var(--directory-muted); }

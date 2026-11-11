@@ -2,7 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Enums\DayOfWeekEnum;
 use App\Models\Doctor;
+use App\Models\DoctorSchedule;
+use App\Models\DoctorTranslation;
+use App\Models\DoctorUnavailability;
+use App\Models\MedicalArea;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -48,5 +54,48 @@ class DoctorFactory extends Factory
             'phone_extension' => fake()->numerify('####'),
             'is_active' => true,
         ];
+    }
+
+    public function withDirectoryRelations(): static
+    {
+        return $this
+            ->state(fn (): array => [
+                'user_id' => User::factory(),
+            ])
+            ->afterCreating(function (Doctor $doctor): void {
+                foreach (['es', 'en'] as $locale) {
+                    DoctorTranslation::factory()
+                        ->for($doctor)
+                        ->create([
+                            'locale' => $locale,
+                            'professional_summary' => fake(
+                                $locale === 'es' ? 'es_ES' : 'en_US'
+                            )->paragraphs(2, true),
+                        ]);
+                }
+
+                $medicalAreas = MedicalArea::query()
+                    ->where('is_active', true)
+                    ->inRandomOrder()
+                    ->limit(fake()->numberBetween(1, 2))
+                    ->get();
+
+                $doctor->medicalAreas()->sync($medicalAreas->modelKeys());
+
+                $availableDays = fake()->randomElements(
+                    array_column(DayOfWeekEnum::cases(), 'value'),
+                    fake()->numberBetween(2, 4)
+                );
+
+                foreach ($availableDays as $dayOfWeek) {
+                    DoctorSchedule::factory()
+                        ->for($doctor)
+                        ->create(['day_of_week' => $dayOfWeek]);
+                }
+
+                DoctorUnavailability::factory()
+                    ->for($doctor)
+                    ->create();
+            });
     }
 }
