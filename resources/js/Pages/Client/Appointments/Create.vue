@@ -74,6 +74,10 @@ const selectedArea = computed(() => medicalAreas.value.find(
   (area) => area.slug === form.medical_area_slug
 ))
 
+const appointmentForSummary = computed(() => (
+  form.appointment_for === 'self' ? 'Mí' : 'Dependiente'
+))
+
 const scheduleDays = computed(() => [...new Set(
   (selectedDoctor.value?.schedules || []).map((schedule) => schedule.dayOfWeek)
 )])
@@ -264,7 +268,7 @@ function submit() {
           <div><dt>Área médica</dt><dd>{{ selectedArea ? areaName(selectedArea) : 'Por seleccionar' }}</dd></div>
           <div><dt>Doctor</dt><dd>{{ selectedDoctor?.name || 'Por seleccionar' }}</dd></div>
           <div><dt>Fecha</dt><dd>{{ form.appointment_date || 'Por seleccionar' }}</dd></div>
-          <div><dt>Cita para</dt><dd>{{ appointmentForOptions.find((option) => option.value === form.appointment_for)?.label }}</dd></div>
+          <div><dt>Para</dt><dd>{{ appointmentForSummary }}</dd></div>
         </dl>
         <p><ShieldCheck :size="16" /> El turno se asignará automáticamente al confirmar.</p>
         <button type="submit" :disabled="!canSubmit">
