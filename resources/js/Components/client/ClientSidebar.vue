@@ -1,6 +1,6 @@
 <script setup>
 import { Link, usePage } from '@inertiajs/vue3'
-import { Activity, CalendarDays, CalendarPlus, FlaskConical, Headphones, HeartPulse, Home, Stethoscope, X } from '@lucide/vue'
+import { Activity, CalendarDays, FlaskConical, Headphones, HeartPulse, Home, Stethoscope, X } from '@lucide/vue'
 import navLogo from '../../Assets/images/nav-logo.png'
 
 defineProps({ open: { type: Boolean, default: false } })
@@ -14,8 +14,7 @@ const mainNavigation = [
 ]
 
 const navigation = [
-  { label: 'Solicitar cita', icon: CalendarPlus, href: '/portal/appointments/create' },
-  { label: 'Historial de citas', icon: CalendarDays },
+  { label: 'Citas', icon: CalendarDays, href: '/portal/appointments' },
   { label: 'Resultados médicos', icon: FlaskConical },
   { label: 'Historial de actividades', icon: Activity },
 ]
