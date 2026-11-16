@@ -49,5 +49,4 @@ class PageController extends Controller
     {
         return Inertia::render('Public/Contact');
     }
-
 }

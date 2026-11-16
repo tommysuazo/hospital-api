@@ -21,11 +21,10 @@ class MedicalResultFactory extends Factory
             'uuid' => (string) Str::uuid(),
             'client_id' => Client::factory(),
             'appointment_id' => null,
-            'result_date' => fake()->dateTimeBetween('-1 year')->format('Y-m-d'),
             'status' => MedicalResultStatusEnum::Draft->value,
-            'file_path' => null,
             'published_at' => null,
             'created_by' => null,
+            'created_at' => fake()->dateTimeBetween('-1 year'),
         ];
     }
 

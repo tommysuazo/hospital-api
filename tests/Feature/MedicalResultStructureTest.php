@@ -6,6 +6,7 @@ use App\Enums\MedicalResultStatusEnum;
 use App\Models\Appointment;
 use App\Models\Client;
 use App\Models\MedicalResult;
+use App\Models\MedicalResultDocument;
 use App\Models\MedicalResultTranslation;
 use App\Models\User;
 use Illuminate\Database\QueryException;
@@ -67,14 +68,14 @@ class MedicalResultStructureTest extends TestCase
         $this->assertNull($medicalResult->creator);
     }
 
-    public function test_medical_result_casts_and_draft_state_are_configured(): void
+    public function test_medical_result_uses_created_at_as_registration_date_and_has_draft_state(): void
     {
         $medicalResult = MedicalResult::factory()->create([
-            'result_date' => '2026-10-20',
+            'created_at' => '2026-10-20 14:30:00',
         ]);
 
-        $this->assertInstanceOf(Carbon::class, $medicalResult->result_date);
-        $this->assertSame('2026-10-20', $medicalResult->result_date->toDateString());
+        $this->assertInstanceOf(Carbon::class, $medicalResult->created_at);
+        $this->assertSame('2026-10-20', $medicalResult->created_at->toDateString());
         $this->assertSame(MedicalResultStatusEnum::Draft->value, $medicalResult->status);
         $this->assertNull($medicalResult->published_at);
     }
@@ -119,6 +120,70 @@ class MedicalResultStructureTest extends TestCase
         $this->assertFalse(Schema::hasColumn('medical_results', 'description'));
         $this->assertTrue(Schema::hasColumn('medical_result_translations', 'title'));
         $this->assertTrue(Schema::hasColumn('medical_result_translations', 'description'));
+    }
+
+    public function test_result_date_and_file_path_are_not_stored_on_medical_results(): void
+    {
+        $this->assertFalse(Schema::hasColumn('medical_results', 'result_date'));
+        $this->assertFalse(Schema::hasColumn('medical_results', 'file_path'));
+        $this->assertTrue(Schema::hasColumn('medical_results', 'created_at'));
+        $this->assertTrue(Schema::hasColumn('medical_result_documents', 'file_path'));
+    }
+
+    public function test_medical_result_can_exist_without_documents_and_receive_multiple_documents(): void
+    {
+        $medicalResult = MedicalResult::factory()->create();
+
+        $this->assertCount(0, $medicalResult->documents);
+
+        MedicalResultDocument::factory()->count(3)->for($medicalResult)->create();
+
+        $medicalResult->refresh();
+
+        $this->assertCount(3, $medicalResult->documents);
+        $this->assertTrue(
+            $medicalResult->documents->every(
+                fn (MedicalResultDocument $document): bool => $document->medicalResult->is($medicalResult)
+            )
+        );
+    }
+
+    public function test_medical_result_document_generates_uuid_uses_soft_deletes_and_stores_metadata(): void
+    {
+        $medicalResult = MedicalResult::factory()->create();
+        $document = MedicalResultDocument::factory()->for($medicalResult)->create([
+            'uuid' => null,
+            'name' => 'Informe medico',
+            'file_path' => 'medical-results/fake/report.pdf',
+            'mime_type' => 'application/pdf',
+            'file_size' => 125_000,
+        ]);
+
+        $this->assertTrue(Str::isUuid($document->uuid));
+        $this->assertSame('uuid', $document->getRouteKeyName());
+        $this->assertTrue($document->medicalResult->is($medicalResult));
+        $this->assertSame('Informe medico', $document->name);
+        $this->assertSame('medical-results/fake/report.pdf', $document->file_path);
+        $this->assertSame('application/pdf', $document->mime_type);
+        $this->assertSame(125_000, $document->file_size);
+
+        $document->delete();
+
+        $this->assertSoftDeleted($document);
+        $this->assertNotNull(
+            MedicalResultDocument::withTrashed()->findOrFail($document->id)->deleted_at
+        );
+    }
+
+    public function test_medical_result_document_nullable_metadata_is_supported(): void
+    {
+        $document = MedicalResultDocument::factory()->create([
+            'mime_type' => null,
+            'file_size' => null,
+        ]);
+
+        $this->assertNull($document->mime_type);
+        $this->assertNull($document->file_size);
     }
 
     public function test_medical_result_cannot_have_duplicate_translation_locales(): void
@@ -170,10 +235,9 @@ class MedicalResultStructureTest extends TestCase
         foreach ([
             ['appointment_id'],
             ['status'],
-            ['result_date'],
             ['published_at'],
             ['client_id', 'status'],
-            ['client_id', 'result_date'],
+            ['client_id', 'created_at'],
         ] as $columns) {
             $this->assertTrue(
                 $indexes->contains(
@@ -182,5 +246,17 @@ class MedicalResultStructureTest extends TestCase
                 'Missing medical_results index for: '.implode(', ', $columns)
             );
         }
+    }
+
+    public function test_medical_result_document_indexes_are_configured(): void
+    {
+        $indexes = collect(Schema::getIndexes('medical_result_documents'));
+
+        $this->assertTrue($indexes->contains(
+            fn (array $index): bool => $index['unique'] && $index['columns'] === ['uuid']
+        ));
+        $this->assertTrue($indexes->contains(
+            fn (array $index): bool => $index['columns'] === ['medical_result_id']
+        ));
     }
 }

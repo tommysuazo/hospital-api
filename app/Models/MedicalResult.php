@@ -15,9 +15,7 @@ use Illuminate\Support\Str;
     'uuid',
     'client_id',
     'appointment_id',
-    'result_date',
     'status',
-    'file_path',
     'published_at',
     'created_by',
 ])]
@@ -53,6 +51,11 @@ class MedicalResult extends Model
         return $this->hasMany(MedicalResultTranslation::class);
     }
 
+    public function documents(): HasMany
+    {
+        return $this->hasMany(MedicalResultDocument::class);
+    }
+
     public function getRouteKeyName(): string
     {
         return 'uuid';
@@ -61,7 +64,6 @@ class MedicalResult extends Model
     protected function casts(): array
     {
         return [
-            'result_date' => 'date',
             'published_at' => 'datetime',
         ];
     }

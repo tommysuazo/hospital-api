@@ -13,16 +13,16 @@ class DoctorRepository
      */
     protected function publicQuery(): Builder
     {
-        $query =  Doctor::query();
+        $query = Doctor::query();
 
         $query->select([
-                'id',
-                'uuid',
-                'user_id',
-                'picture',
-                'consulting_room',
-                'phone_extension',
-            ])
+            'id',
+            'uuid',
+            'user_id',
+            'picture',
+            'consulting_room',
+            'phone_extension',
+        ])
             ->with([
                 'user:id,first_name,last_name',
                 'translations:id,doctor_id,locale,professional_summary',

@@ -6,8 +6,9 @@ use App\Models\Appointment;
 use App\Models\Client;
 use App\Models\Doctor;
 use App\Models\DoctorUnavailability;
-use App\Models\MedicalResult;
 use App\Models\MedicalArea;
+use App\Models\MedicalResult;
+use App\Models\MedicalResultDocument;
 use App\Models\MedicalService;
 use App\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -30,6 +31,7 @@ class SoftDeletesStructureTest extends TestCase
             'medical_services' => MedicalService::class,
             'appointments' => Appointment::class,
             'medical_results' => MedicalResult::class,
+            'medical_result_documents' => MedicalResultDocument::class,
         ];
 
         foreach ($modelsByTable as $table => $model) {

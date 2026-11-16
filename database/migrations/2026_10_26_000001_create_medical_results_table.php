@@ -17,10 +17,8 @@ return new class extends Migration
             $table->foreignId('appointment_id')
                 ->nullable()
                 ->constrained();
-            $table->date('result_date');
             $table->enum('status', array_column(MedicalResultStatusEnum::cases(), 'value'))
                 ->default(MedicalResultStatusEnum::Draft->value);
-            $table->string('file_path')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->foreignId('created_by')
                 ->nullable()
@@ -30,15 +28,14 @@ return new class extends Migration
 
             $table->index('appointment_id');
             $table->index('status');
-            $table->index('result_date');
             $table->index('published_at');
             $table->index(
                 ['client_id', 'status'],
                 'medical_results_client_status_index'
             );
             $table->index(
-                ['client_id', 'result_date'],
-                'medical_results_client_result_date_index'
+                ['client_id', 'created_at'],
+                'medical_results_client_created_at_index'
             );
         });
     }
