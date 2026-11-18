@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
@@ -26,11 +27,21 @@ class HandleInertiaRequests extends Middleware
     {
         foreach (['client', 'staff'] as $guard) {
             if ($account = Auth::guard($guard)->user()) {
-                return [
+                $sharedAccount = [
                     'type' => $guard,
                     'first_name' => $account->first_name,
                     'last_name' => $account->last_name,
                 ];
+
+                if ($account instanceof User) {
+                    $sharedAccount['roles'] = $account->getRoleNames()->values()->all();
+                    $sharedAccount['permissions'] = $account->getAllPermissions()
+                        ->pluck('name')
+                        ->values()
+                        ->all();
+                }
+
+                return $sharedAccount;
             }
         }
 

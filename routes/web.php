@@ -6,6 +6,8 @@ use App\Http\Controllers\Public\AuthController;
 use App\Http\Controllers\Public\DoctorController;
 use App\Http\Controllers\Public\MedicalServiceController;
 use App\Http\Controllers\Public\PageController;
+use App\Http\Controllers\Staff\DashboardController as StaffDashboardController;
+use App\Http\Controllers\Staff\ModuleController as StaffModuleController;
 use Illuminate\Support\Facades\Route;
 
 Route::name('public.')->group(function () {
@@ -61,4 +63,37 @@ Route::prefix('portal')->name('client.')->middleware('auth:client')->group(funct
         Route::get('/', [App\Http\Controllers\Client\MedicalServiceController::class, 'index'])->name('index');
         Route::get('/{medicalService}', [App\Http\Controllers\Client\MedicalServiceController::class, 'show'])->name('show');
     });
+});
+
+Route::prefix('staff')->name('staff.')->middleware('auth:staff')->group(function () {
+    Route::get('/', [StaffDashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/appointments', [StaffModuleController::class, 'show'])
+        ->defaults('module', 'appointments')->name('appointments.index');
+    Route::get('/clients', [StaffModuleController::class, 'show'])
+        ->defaults('module', 'clients')->name('clients.index');
+    Route::get('/doctors', [StaffModuleController::class, 'show'])
+        ->defaults('module', 'doctors')->name('doctors.index');
+    Route::get('/medical-results', [StaffModuleController::class, 'show'])
+        ->defaults('module', 'medical-results')->name('medical-results.index');
+    Route::get('/schedules', [StaffModuleController::class, 'show'])
+        ->defaults('module', 'schedules')->name('schedules.index');
+    Route::get('/medical-areas', [StaffModuleController::class, 'show'])
+        ->defaults('module', 'medical-areas')->name('medical-areas.index');
+    Route::get('/medical-services', [StaffModuleController::class, 'show'])
+        ->defaults('module', 'medical-services')->name('medical-services.index');
+    Route::get('/facilities', [StaffModuleController::class, 'show'])
+        ->defaults('module', 'facilities')->name('facilities.index');
+    Route::get('/insurance', [StaffModuleController::class, 'show'])
+        ->defaults('module', 'insurance')->name('insurance.index');
+    Route::get('/documents', [StaffModuleController::class, 'show'])
+        ->defaults('module', 'documents')->name('documents.index');
+    Route::get('/users', [StaffModuleController::class, 'show'])
+        ->defaults('module', 'users')->name('users.index');
+    Route::get('/roles', [StaffModuleController::class, 'show'])
+        ->defaults('module', 'roles')->name('roles.index');
+    Route::get('/audit', [StaffModuleController::class, 'show'])
+        ->defaults('module', 'audit')->name('audit.index');
+    Route::get('/settings', [StaffModuleController::class, 'show'])
+        ->defaults('module', 'settings')->name('settings.index');
 });

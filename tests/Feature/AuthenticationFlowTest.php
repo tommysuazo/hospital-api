@@ -113,7 +113,7 @@ class AuthenticationFlowTest extends TestCase
             'email' => $staff->email,
             'password' => 'Password123!',
             'remember' => false,
-        ])->assertRedirect(route('public.home'))
+        ])->assertRedirect(route('staff.dashboard'))
             ->assertSessionMissing('auth.challenge_uuid');
 
         $this->assertAuthenticatedAs($staff, 'staff');
