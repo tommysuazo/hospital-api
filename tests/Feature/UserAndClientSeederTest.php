@@ -9,6 +9,7 @@ use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 class UserAndClientSeederTest extends TestCase
@@ -30,7 +31,7 @@ class UserAndClientSeederTest extends TestCase
         ]);
     }
 
-    public function test_user_seeder_creates_an_active_verified_super_admin(): void
+    public function test_user_seeder_creates_an_active_super_admin(): void
     {
         $this->seed(UserSeeder::class);
 
@@ -44,9 +45,14 @@ class UserAndClientSeederTest extends TestCase
         $this->assertNotEmpty($user->uuid);
         $this->assertContains($user->gender, ['male', 'female']);
         $this->assertTrue($user->is_active);
-        $this->assertNotNull($user->email_verified_at);
         $this->assertTrue(Hash::check('password', $user->password));
         $this->assertTrue($user->hasRole('super-admin'));
+    }
+
+    public function test_only_clients_have_an_email_verification_column(): void
+    {
+        $this->assertFalse(Schema::hasColumn('users', 'email_verified_at'));
+        $this->assertTrue(Schema::hasColumn('clients', 'email_verified_at'));
     }
 
     public function test_client_seeder_creates_a_client_ready_to_log_in(): void

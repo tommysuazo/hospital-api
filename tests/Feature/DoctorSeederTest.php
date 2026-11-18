@@ -52,7 +52,6 @@ class DoctorSeederTest extends TestCase
             ->each(function (Doctor $doctor): void {
                 $this->assertNotNull($doctor->user);
                 $this->assertTrue($doctor->user->is_active);
-                $this->assertNotNull($doctor->user->email_verified_at);
                 $this->assertCount(2, $doctor->translations);
                 $this->assertNotEmpty($doctor->medicalAreas);
                 $this->assertNotEmpty($doctor->schedules);

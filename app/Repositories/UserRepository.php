@@ -22,14 +22,6 @@ class UserRepository
             ->first();
     }
 
-    public function markEmailAsVerified(User $user): void
-    {
-        if ($user->email_verified_at === null) {
-            $user->email_verified_at = now();
-            $user->save();
-        }
-    }
-
     public function updateLastLogin(User $user): void
     {
         $user->last_login_at = now();

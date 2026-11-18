@@ -19,11 +19,6 @@ class UserService
         return $this->userRepository->findActiveById($id);
     }
 
-    public function markEmailAsVerified(User $user): void
-    {
-        $this->userRepository->markEmailAsVerified($user);
-    }
-
     public function updateLastLogin(User $user): void
     {
         $this->userRepository->updateLastLogin($user);

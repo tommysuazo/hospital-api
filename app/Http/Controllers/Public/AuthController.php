@@ -62,7 +62,11 @@ class AuthController extends Controller
                 $request->session()->forget(['auth.challenge_uuid', 'auth.masked_email', 'auth.challenge_purpose', 'auth.challenge_fake']);
                 $request->session()->regenerate();
 
-                return to_route('client.dashboard')->with('status', 'La sesión se inició correctamente.');
+                $destination = $data['access_type'] === AuthService::ACCOUNT_STAFF
+                    ? 'public.home'
+                    : 'client.dashboard';
+
+                return to_route($destination)->with('status', 'La sesión se inició correctamente.');
             }
 
             $this->storeChallenge($request, $challenge, $data['email']);

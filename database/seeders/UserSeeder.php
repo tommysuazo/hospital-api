@@ -41,7 +41,6 @@ class UserSeeder extends Seeder
                 'phone' => $data['phone'],
                 'password' => $data['password'],
                 'is_active' => true,
-                'email_verified_at' => $user->email_verified_at ?? now(),
                 'deleted_at' => null,
             ])->save();
         }

@@ -70,6 +70,13 @@ class AuthService
             throw new KnownException('Las credenciales proporcionadas no son válidas.');
         }
 
+        if ($account instanceof User) {
+            $this->userService->updateLastLogin($account);
+            Auth::guard('staff')->login($account, (bool) ($data['remember'] ?? false));
+
+            return null;
+        }
+
         if ($account instanceof Client && $account->email_verified_at !== null) {
             $this->clientService->updateLastLogin($account);
             Auth::guard('client')->login($account, (bool) ($data['remember'] ?? false));
@@ -117,7 +124,6 @@ class AuthService
             $this->clientService->markEmailAsVerified($account);
             $this->clientService->updateLastLogin($account);
         } else {
-            $this->userService->markEmailAsVerified($account);
             $this->userService->updateLastLogin($account);
         }
 

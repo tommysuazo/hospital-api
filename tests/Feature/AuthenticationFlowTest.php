@@ -99,7 +99,7 @@ class AuthenticationFlowTest extends TestCase
         Notification::assertNothingSent();
     }
 
-    public function test_staff_can_login_but_cannot_use_the_public_password_recovery_flow(): void
+    public function test_staff_can_login_without_email_verification_but_cannot_use_the_public_password_recovery_flow(): void
     {
         Notification::fake();
         $staff = User::factory()->create([
@@ -113,15 +113,15 @@ class AuthenticationFlowTest extends TestCase
             'email' => $staff->email,
             'password' => 'Password123!',
             'remember' => false,
-        ])->assertRedirect(route('public.auth.verify.show'));
+        ])->assertRedirect(route('public.home'))
+            ->assertSessionMissing('auth.challenge_uuid');
 
-        $this->post('/auth/verify-code', ['code' => $this->verificationCodeSentTo($staff)])
-            ->assertRedirect(route('public.home'));
         $this->assertAuthenticatedAs($staff, 'staff');
+        $this->assertNotNull($staff->fresh()->last_login_at);
 
         $this->post('/password/forgot', ['email' => $staff->email])
             ->assertRedirect(route('public.auth.verify.show'));
-        Notification::assertSentToTimes($staff, AuthVerificationCodeNotification::class, 1);
+        Notification::assertNothingSent();
     }
 
     public function test_a_verified_client_can_reset_the_password_with_a_code(): void
