@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Database\Seeders\RoleAndPermissionSeeder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Permission;
@@ -88,5 +89,21 @@ class RoleAndPermissionSeederTest extends TestCase
         $this->assertDatabaseCount('permissions', 54);
         $this->assertDatabaseCount('roles', 7);
         $this->assertSame(54, Permission::query()->distinct()->count('name'));
+    }
+
+    public function test_it_syncs_roles_when_model_events_are_disabled(): void
+    {
+        Model::withoutEvents(function (): void {
+            $this->seed(RoleAndPermissionSeeder::class);
+        });
+
+        $role = Role::findByName('super-admin');
+        $permission = Permission::findByName('dashboard.view');
+
+        $this->assertTrue($role->hasPermissionTo($permission));
+        $this->assertDatabaseHas('role_has_permissions', [
+            'role_id' => $role->getKey(),
+            'permission_id' => $permission->getKey(),
+        ]);
     }
 }
